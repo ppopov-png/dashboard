@@ -4,6 +4,7 @@ import {
   CrosshairMode,
   LineSeries,
   createChart,
+  type Time,
   type UTCTimestamp,
 } from 'lightweight-charts'
 
@@ -111,14 +112,14 @@ export default function LineChart({ title, yLabel, series, height = 320, footer 
         minBarSpacing: 22,
         fixLeftEdge: true,
         fixRightEdge: true,
-        tickMarkFormatter: (time) => {
+        tickMarkFormatter: (time: Time) => {
           const key = typeof time === 'number' ? time : 0
           return shortLabel(labelByTime.get(key) ?? '')
         },
       },
       localization: {
         locale: 'ru-RU',
-        priceFormatter: (price) => compact(price),
+        priceFormatter: (price: number) => compact(price),
       },
       handleScroll: {
         mouseWheel: true,
