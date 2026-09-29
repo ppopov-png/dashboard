@@ -52,6 +52,27 @@ export interface InvestTeam {
   ideas: InvestIdea[]
 }
 
+export interface DataQualityNote {
+  title: string
+  text: string
+}
+
+export interface InvestTimelineItem {
+  date: string
+  text: string
+}
+
+export interface InvestMeta {
+  asOf: string
+  totalIdeas: number
+  openIdeas: number
+  closedIdeas: number
+  realizedPnl: number
+  realizedBase: number
+  unrealizedPnl: number
+  activeAllocation: number
+}
+
 export interface DashboardData {
   updatedAt: string
   traders: string[]
@@ -61,4 +82,7 @@ export interface DashboardData {
   intervals: Interval[]
   capitalEvents: Record<string, CapitalEvent[]>
   investTeams: Record<string, InvestTeam>
+  dataQualityNotes: DataQualityNote[]
+  investMeta: InvestMeta
+  investTimeline: InvestTimelineItem[]
 }
