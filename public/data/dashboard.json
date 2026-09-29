@@ -1,124 +1,997 @@
 {
   "updatedAt": "2026-09-14T00:00:00Z",
-  "traders": ["Никита", "Родион", "Лиза", "Андрей", "Сергей", "Слава"],
+  "traders": [
+    "Никита",
+    "Родион",
+    "Лиза",
+    "Андрей",
+    "Сергей",
+    "Слава"
+  ],
   "periods": [
-    { "key": "jul13", "label": "1-13 июля", "type": "snapshot" },
-    { "key": "jul20", "label": "1-20 июля", "type": "snapshot" },
-    { "key": "jul31", "label": "Июль", "type": "month" },
-    { "key": "aug09", "label": "1-9 августа", "type": "snapshot" },
-    { "key": "aug17", "label": "1-17 августа", "type": "snapshot" },
-    { "key": "aug24", "label": "1-24 августа", "type": "snapshot" },
-    { "key": "aug31", "label": "Август", "type": "month" },
-    { "key": "sep07", "label": "1–7 сентября", "type": "snapshot" },
-    { "key": "sep14", "label": "1–14 сентября", "type": "snapshot" }
+    {
+      "key": "jul13",
+      "label": "1-13 июля",
+      "type": "snapshot"
+    },
+    {
+      "key": "jul20",
+      "label": "1-20 июля",
+      "type": "snapshot"
+    },
+    {
+      "key": "jul31",
+      "label": "Июль",
+      "type": "month"
+    },
+    {
+      "key": "aug09",
+      "label": "1-9 августа",
+      "type": "snapshot"
+    },
+    {
+      "key": "aug17",
+      "label": "1-17 августа",
+      "type": "snapshot"
+    },
+    {
+      "key": "aug24",
+      "label": "1-24 августа",
+      "type": "snapshot"
+    },
+    {
+      "key": "aug31",
+      "label": "Август",
+      "type": "month"
+    },
+    {
+      "key": "sep07",
+      "label": "1–7 сентября",
+      "type": "snapshot"
+    },
+    {
+      "key": "sep14",
+      "label": "1–14 сентября",
+      "type": "snapshot"
+    }
   ],
   "investHistory": {
-    "jul13": { "realized": 0, "allocation": 0, "note": "На дату среза закрытых Invest Ideas с подтвержденным realized PNL нет" },
-    "jul20": { "realized": 0, "allocation": 0, "note": "На дату среза закрытых Invest Ideas с подтвержденным realized PNL нет" },
-    "jul31": { "realized": 2478, "allocation": 25000, "note": "UNI LONG закрыта 30.07: +$2 478" },
-    "aug09": { "realized": 2478, "allocation": 25000, "note": "На дату среза реализована UNI LONG: +$2 478" },
-    "aug17": { "realized": 2478, "allocation": 25000, "note": "На дату среза реализована UNI LONG: +$2 478" },
-    "aug24": { "realized": 9912, "allocation": 75000, "note": "UNI + Brent + CRCL realized PNL: +$9 912" },
-    "aug31": { "realized": 9912, "allocation": 75000, "note": "Monthly close: realized PNL +$9 912" },
-    "sep07": { "realized": 9912, "allocation": 75000, "note": "Realized PNL Invest Ideas сохраняется +$9 912" },
-    "sep14": { "realized": 9912, "allocation": 75000, "note": "Realized PNL Invest Ideas сохраняется +$9 912" }
+    "jul13": {
+      "realized": 0,
+      "allocation": 0,
+      "note": "На дату среза закрытых Invest Ideas с подтвержденным realized PNL нет"
+    },
+    "jul20": {
+      "realized": 0,
+      "allocation": 0,
+      "note": "На дату среза закрытых Invest Ideas с подтвержденным realized PNL нет"
+    },
+    "jul31": {
+      "realized": 2478,
+      "allocation": 25000,
+      "note": "UNI LONG закрыта 30.07: +$2 478"
+    },
+    "aug09": {
+      "realized": 2478,
+      "allocation": 25000,
+      "note": "На дату среза реализована UNI LONG: +$2 478"
+    },
+    "aug17": {
+      "realized": 2478,
+      "allocation": 25000,
+      "note": "На дату среза реализована UNI LONG: +$2 478"
+    },
+    "aug24": {
+      "realized": 9912,
+      "allocation": 75000,
+      "note": "UNI + Brent + CRCL realized PNL: +$9 912"
+    },
+    "aug31": {
+      "realized": 9912,
+      "allocation": 75000,
+      "note": "Monthly close: realized PNL +$9 912"
+    },
+    "sep07": {
+      "realized": 9912,
+      "allocation": 75000,
+      "note": "Realized PNL Invest Ideas сохраняется +$9 912"
+    },
+    "sep14": {
+      "realized": 9912,
+      "allocation": 75000,
+      "note": "Realized PNL Invest Ideas сохраняется +$9 912"
+    }
   },
   "data": {
     "jul13": [
-      {"name":"Никита","pnl":382.58,"roi":0.26,"bybit":80.58,"mexc":0,"lmax":302,"spot":null,"capitalAfter":74555.94,"capitalStart":150000},
-      {"name":"Родион","pnl":-381.77,"roi":-0.25,"bybit":-381.77,"mexc":0,"lmax":0,"spot":null,"capitalAfter":77991.05,"capitalStart":150000},
-      {"name":"Лиза","pnl":476.95,"roi":1.19,"bybit":0,"mexc":0,"lmax":476.95,"spot":null,"capitalAfter":20000,"capitalStart":40000},
-      {"name":"Андрей","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":10000,"capitalStart":10000},
-      {"name":"Сергей","pnl":190.41,"roi":1.9,"bybit":190.41,"mexc":0,"lmax":0,"spot":null,"capitalAfter":10190.41,"capitalStart":10000},
-      {"name":"Слава","pnl":-26.62,"roi":-0.27,"bybit":-26.62,"mexc":0,"lmax":0,"spot":null,"capitalAfter":9973.38,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": 382.58,
+        "roi": 0.26,
+        "bybit": 80.58,
+        "mexc": 0,
+        "lmax": 302,
+        "spot": null,
+        "capitalAfter": 74555.94,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Родион",
+        "pnl": -381.77,
+        "roi": -0.25,
+        "bybit": -381.77,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 77991.05,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Лиза",
+        "pnl": 476.95,
+        "roi": 1.19,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 476.95,
+        "spot": null,
+        "capitalAfter": 20000,
+        "capitalStart": 40000
+      },
+      {
+        "name": "Андрей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 10000,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 190.41,
+        "roi": 1.9,
+        "bybit": 190.41,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 10190.41,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Слава",
+        "pnl": -26.62,
+        "roi": -0.27,
+        "bybit": -26.62,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 9973.38,
+        "capitalStart": 10000
+      }
     ],
     "jul20": [
-      {"name":"Никита","pnl":925.8,"roi":0.62,"bybit":80.58,"mexc":0,"lmax":845.22,"spot":null,"capitalAfter":74555.94,"capitalStart":150000},
-      {"name":"Родион","pnl":-740.09,"roi":-0.49,"bybit":-89.53,"mexc":0,"lmax":-650.56,"spot":null,"capitalAfter":78283.29,"capitalStart":150000},
-      {"name":"Лиза","pnl":467.66,"roi":1.17,"bybit":0,"mexc":0,"lmax":467.66,"spot":null,"capitalAfter":20000,"capitalStart":40000},
-      {"name":"Андрей","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":10000,"capitalStart":10000},
-      {"name":"Сергей","pnl":190.41,"roi":1.9,"bybit":190.41,"mexc":0,"lmax":0,"spot":null,"capitalAfter":10190.41,"capitalStart":10000},
-      {"name":"Слава","pnl":-120.28,"roi":-1.2,"bybit":-120.28,"mexc":0,"lmax":0,"spot":null,"capitalAfter":9879.72,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": 925.8,
+        "roi": 0.62,
+        "bybit": 80.58,
+        "mexc": 0,
+        "lmax": 845.22,
+        "spot": null,
+        "capitalAfter": 74555.94,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Родион",
+        "pnl": -740.09,
+        "roi": -0.49,
+        "bybit": -89.53,
+        "mexc": 0,
+        "lmax": -650.56,
+        "spot": null,
+        "capitalAfter": 78283.29,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Лиза",
+        "pnl": 467.66,
+        "roi": 1.17,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 467.66,
+        "spot": null,
+        "capitalAfter": 20000,
+        "capitalStart": 40000
+      },
+      {
+        "name": "Андрей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 10000,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 190.41,
+        "roi": 1.9,
+        "bybit": 190.41,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 10190.41,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Слава",
+        "pnl": -120.28,
+        "roi": -1.2,
+        "bybit": -120.28,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 9879.72,
+        "capitalStart": 10000
+      }
     ],
     "jul31": [
-      {"name":"Никита","pnl":24.47,"roi":0.02,"bybit":49.63,"mexc":0,"lmax":-25.16,"spot":null,"capitalAfter":74524.99,"capitalStart":150000},
-      {"name":"Родион","pnl":-937.57,"roi":-0.59,"bybit":57.03,"mexc":0,"lmax":-994.6,"spot":null,"capitalAfter":78429.85,"capitalStart":150000},
-      {"name":"Лиза","pnl":129.66,"roi":0.32,"bybit":0,"mexc":0,"lmax":129.66,"spot":null,"capitalAfter":20000,"capitalStart":40000},
-      {"name":"Андрей","pnl":-43.19,"roi":-0.43,"bybit":-103.52,"mexc":60.33,"lmax":0,"spot":null,"capitalAfter":4896.48,"capitalStart":10000},
-      {"name":"Сергей","pnl":497.12,"roi":4.97,"bybit":497.12,"mexc":0,"lmax":0,"spot":null,"capitalAfter":5497.12,"capitalStart":10000},
-      {"name":"Слава","pnl":-487.38,"roi":-4.87,"bybit":-357.7,"mexc":-129.68,"lmax":0,"spot":null,"capitalAfter":4642.3,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": 24.47,
+        "roi": 0.02,
+        "bybit": 49.63,
+        "mexc": 0,
+        "lmax": -25.16,
+        "spot": null,
+        "capitalAfter": 74524.99,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Родион",
+        "pnl": -937.57,
+        "roi": -0.59,
+        "bybit": 57.03,
+        "mexc": 0,
+        "lmax": -994.6,
+        "spot": null,
+        "capitalAfter": 78429.85,
+        "capitalStart": 150000
+      },
+      {
+        "name": "Лиза",
+        "pnl": 129.66,
+        "roi": 0.32,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 129.66,
+        "spot": null,
+        "capitalAfter": 20000,
+        "capitalStart": 40000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -43.19,
+        "roi": -0.43,
+        "bybit": -103.52,
+        "mexc": 60.33,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 4896.48,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 497.12,
+        "roi": 4.97,
+        "bybit": 497.12,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 5497.12,
+        "capitalStart": 10000
+      },
+      {
+        "name": "Слава",
+        "pnl": -487.38,
+        "roi": -4.87,
+        "bybit": -357.7,
+        "mexc": -129.68,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 4642.3,
+        "capitalStart": 10000
+      }
     ],
     "aug09": [
-      {"name":"Никита","pnl":-2163.16,"roi":-1.35,"bybit":-1441.5,"mexc":0,"lmax":-721.66,"spot":null,"capitalAfter":73083.49,"capitalStart":160000},
-      {"name":"Родион","pnl":-337.13,"roi":-0.21,"bybit":-337.13,"mexc":0,"lmax":0,"spot":null,"capitalAfter":78092.72,"capitalStart":160000},
-      {"name":"Лиза","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":0,"capitalStart":80000},
-      {"name":"Андрей","pnl":-79.69,"roi":-0.8,"bybit":-65,"mexc":-14.69,"lmax":0,"spot":null,"capitalAfter":14935,"capitalStart":20000},
-      {"name":"Сергей","pnl":-225.84,"roi":-2.26,"bybit":-225.84,"mexc":0,"lmax":0,"spot":null,"capitalAfter":14774.16,"capitalStart":20000},
-      {"name":"Слава","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":4642.3,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": -2163.16,
+        "roi": -1.35,
+        "bybit": -1441.5,
+        "mexc": 0,
+        "lmax": -721.66,
+        "spot": null,
+        "capitalAfter": 73083.49,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": -337.13,
+        "roi": -0.21,
+        "bybit": -337.13,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 78092.72,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 0,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -79.69,
+        "roi": -0.8,
+        "bybit": -65,
+        "mexc": -14.69,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 14935,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": -225.84,
+        "roi": -2.26,
+        "bybit": -225.84,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 14774.16,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 4642.3,
+        "capitalStart": 10000
+      }
     ],
     "aug17": [
-      {"name":"Никита","pnl":-2521.5,"roi":-1.58,"bybit":-1469.2,"mexc":0,"lmax":-1052.3,"spot":null,"capitalAfter":73055.79,"capitalStart":160000},
-      {"name":"Родион","pnl":-181.09,"roi":-0.11,"bybit":-181.09,"mexc":0,"lmax":0,"spot":null,"capitalAfter":78248.76,"capitalStart":160000},
-      {"name":"Лиза","pnl":-187.84,"roi":-0.23,"bybit":0,"mexc":0,"lmax":-187.84,"spot":null,"capitalAfter":0,"capitalStart":80000},
-      {"name":"Андрей","pnl":-75.21,"roi":-0.38,"bybit":-60.52,"mexc":-14.69,"lmax":0,"spot":null,"capitalAfter":14939.48,"capitalStart":20000},
-      {"name":"Сергей","pnl":-225.84,"roi":-1.13,"bybit":-225.84,"mexc":0,"lmax":0,"spot":null,"capitalAfter":14774.16,"capitalStart":20000},
-      {"name":"Слава","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":4642.3,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": -2521.5,
+        "roi": -1.58,
+        "bybit": -1469.2,
+        "mexc": 0,
+        "lmax": -1052.3,
+        "spot": null,
+        "capitalAfter": 73055.79,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": -181.09,
+        "roi": -0.11,
+        "bybit": -181.09,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 78248.76,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -187.84,
+        "roi": -0.23,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": -187.84,
+        "spot": null,
+        "capitalAfter": 0,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -75.21,
+        "roi": -0.38,
+        "bybit": -60.52,
+        "mexc": -14.69,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 14939.48,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": -225.84,
+        "roi": -1.13,
+        "bybit": -225.84,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 14774.16,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 4642.3,
+        "capitalStart": 10000
+      }
     ],
     "aug24": [
-      {"name":"Никита","pnl":-2753.22,"roi":-1.72,"bybit":-584.77,"mexc":0,"lmax":-2168.45,"spot":null,"capitalAfter":92563.7,"capitalStart":160000},
-      {"name":"Родион","pnl":-181.09,"roi":-0.11,"bybit":-181.09,"mexc":0,"lmax":0,"spot":null,"capitalAfter":99667.39,"capitalStart":160000},
-      {"name":"Лиза","pnl":-187.84,"roi":-0.23,"bybit":0,"mexc":0,"lmax":-187.84,"spot":null,"capitalAfter":39695.33,"capitalStart":80000},
-      {"name":"Андрей","pnl":-75.21,"roi":-0.38,"bybit":-60.52,"mexc":-14.69,"lmax":0,"spot":null,"capitalAfter":19985.12,"capitalStart":20000},
-      {"name":"Сергей","pnl":-225.84,"roi":-1.13,"bybit":-225.84,"mexc":0,"lmax":0,"spot":null,"capitalAfter":19774.16,"capitalStart":20000},
-      {"name":"Слава","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":9512.62,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": -2753.22,
+        "roi": -1.72,
+        "bybit": -584.77,
+        "mexc": 0,
+        "lmax": -2168.45,
+        "spot": null,
+        "capitalAfter": 92563.7,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": -181.09,
+        "roi": -0.11,
+        "bybit": -181.09,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 99667.39,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -187.84,
+        "roi": -0.23,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": -187.84,
+        "spot": null,
+        "capitalAfter": 39695.33,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -75.21,
+        "roi": -0.38,
+        "bybit": -60.52,
+        "mexc": -14.69,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 19985.12,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": -225.84,
+        "roi": -1.13,
+        "bybit": -225.84,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 19774.16,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 9512.62,
+        "capitalStart": 10000
+      }
     ],
     "aug31": [
-      {"name":"Никита","pnl":-2781.57,"roi":-1.74,"bybit":-634.13,"mexc":0,"lmax":-2147.44,"spot":null,"capitalAfter":157218.43,"capitalStart":160000},
-      {"name":"Родион","pnl":655,"roi":0.41,"bybit":655,"mexc":0,"lmax":0,"spot":null,"capitalAfter":160655,"capitalStart":160000},
-      {"name":"Лиза","pnl":-187.84,"roi":-0.23,"bybit":0,"mexc":0,"lmax":-187.84,"spot":null,"capitalAfter":79812.16,"capitalStart":80000},
-      {"name":"Андрей","pnl":-75.21,"roi":-0.38,"bybit":-60.52,"mexc":-14.69,"lmax":0,"spot":null,"capitalAfter":19924.79,"capitalStart":20000},
-      {"name":"Сергей","pnl":-225.94,"roi":-1.13,"bybit":-225.94,"mexc":0,"lmax":0,"spot":null,"capitalAfter":19774.06,"capitalStart":20000},
-      {"name":"Слава","pnl":-34.85,"roi":-0.35,"bybit":-16.85,"mexc":-18,"lmax":0,"spot":null,"capitalAfter":9965.15,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": -2781.57,
+        "roi": -1.74,
+        "bybit": -634.13,
+        "mexc": 0,
+        "lmax": -2147.44,
+        "spot": null,
+        "capitalAfter": 157218.43,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": 655,
+        "roi": 0.41,
+        "bybit": 655,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 160655,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -187.84,
+        "roi": -0.23,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": -187.84,
+        "spot": null,
+        "capitalAfter": 79812.16,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -75.21,
+        "roi": -0.38,
+        "bybit": -60.52,
+        "mexc": -14.69,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 19924.79,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": -225.94,
+        "roi": -1.13,
+        "bybit": -225.94,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 19774.06,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": -34.85,
+        "roi": -0.35,
+        "bybit": -16.85,
+        "mexc": -18,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": 9965.15,
+        "capitalStart": 10000
+      }
     ],
     "sep07": [
-      {"name":"Никита","pnl":1189.11,"roi":0.74,"bybit":1189.11,"mexc":0,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":160000},
-      {"name":"Родион","pnl":2106.29,"roi":1.32,"bybit":0,"mexc":0,"lmax":2106.29,"spot":null,"capitalAfter":null,"capitalStart":160000},
-      {"name":"Лиза","pnl":623.37,"roi":0.78,"bybit":0,"mexc":0,"lmax":623.37,"spot":null,"capitalAfter":null,"capitalStart":80000},
-      {"name":"Андрей","pnl":-14.69,"roi":-0.07,"bybit":0,"mexc":-14.69,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":20000},
-      {"name":"Сергей","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":20000},
-      {"name":"Слава","pnl":-18,"roi":-0.18,"bybit":0,"mexc":-18,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": 1189.11,
+        "roi": 0.74,
+        "bybit": 1189.11,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": 2106.29,
+        "roi": 1.32,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 2106.29,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": 623.37,
+        "roi": 0.78,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 623.37,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -14.69,
+        "roi": -0.07,
+        "bybit": 0,
+        "mexc": -14.69,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": -18,
+        "roi": -0.18,
+        "bybit": 0,
+        "mexc": -18,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 10000
+      }
     ],
     "sep14": [
-      {"name":"Никита","pnl":1778.75,"roi":1.13,"bybit":1032.14,"mexc":0,"lmax":746.61,"spot":null,"capitalAfter":null,"capitalStart":160000},
-      {"name":"Родион","pnl":1580.36,"roi":0.98,"bybit":-827.19,"mexc":0,"lmax":2407.55,"spot":null,"capitalAfter":null,"capitalStart":160000},
-      {"name":"Лиза","pnl":-197.63,"roi":-0.25,"bybit":0,"mexc":-821,"lmax":623.37,"spot":null,"capitalAfter":null,"capitalStart":80000},
-      {"name":"Андрей","pnl":-3.5,"roi":-0.02,"bybit":-3.5,"mexc":0,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":20000},
-      {"name":"Сергей","pnl":0,"roi":0,"bybit":0,"mexc":0,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":20000},
-      {"name":"Слава","pnl":-16.83,"roi":-0.17,"bybit":0,"mexc":-16.83,"lmax":0,"spot":null,"capitalAfter":null,"capitalStart":10000}
+      {
+        "name": "Никита",
+        "pnl": 1778.75,
+        "roi": 1.13,
+        "bybit": 1032.14,
+        "mexc": 0,
+        "lmax": 746.61,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": 1580.36,
+        "roi": 0.98,
+        "bybit": -827.19,
+        "mexc": 0,
+        "lmax": 2407.55,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -197.63,
+        "roi": -0.25,
+        "bybit": 0,
+        "mexc": -821,
+        "lmax": 623.37,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -3.5,
+        "roi": -0.02,
+        "bybit": -3.5,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": -16.83,
+        "roi": -0.17,
+        "bybit": 0,
+        "mexc": -16.83,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 10000
+      }
     ]
   },
   "intervals": [
-    {"label":"1-13 июля","from":null,"to":"jul13","note":"Первый срез периода"},
-    {"label":"14-20 июля","from":"jul13","to":"jul20","note":"Дельта между накопительными отчетами"},
-    {"label":"21-31 июля","from":"jul20","to":"jul31","note":"Закрытие месяца по скриншоту июля"},
-    {"label":"1-9 августа","from":null,"to":"aug09","note":"Новый месяц, срез с нуля"},
-    {"label":"10-17 августа","from":"aug09","to":"aug17","note":"Дельта второй недели августа"},
-    {"label":"18-24 августа","from":"aug17","to":"aug24","note":"Изменение за неделю по отчету"},
-    {"label":"25-31 августа","from":"aug24","to":"aug31","note":"Закрытие месяца"},
-    {"label":"1–7 сентября","from":null,"to":"sep07","note":"Новый месяц, первый срез с нуля"},
-    {"label":"8–14 сентября","from":"sep07","to":"sep14","note":"Изменение за неделю"}
+    {
+      "label": "1-13 июля",
+      "from": null,
+      "to": "jul13",
+      "note": "Первый срез периода"
+    },
+    {
+      "label": "14-20 июля",
+      "from": "jul13",
+      "to": "jul20",
+      "note": "Дельта между накопительными отчетами"
+    },
+    {
+      "label": "21-31 июля",
+      "from": "jul20",
+      "to": "jul31",
+      "note": "Закрытие месяца по скриншоту июля"
+    },
+    {
+      "label": "1-9 августа",
+      "from": null,
+      "to": "aug09",
+      "note": "Новый месяц, срез с нуля"
+    },
+    {
+      "label": "10-17 августа",
+      "from": "aug09",
+      "to": "aug17",
+      "note": "Дельта второй недели августа"
+    },
+    {
+      "label": "18-24 августа",
+      "from": "aug17",
+      "to": "aug24",
+      "note": "Изменение за неделю по отчету"
+    },
+    {
+      "label": "25-31 августа",
+      "from": "aug24",
+      "to": "aug31",
+      "note": "Закрытие месяца"
+    },
+    {
+      "label": "1–7 сентября",
+      "from": null,
+      "to": "sep07",
+      "note": "Новый месяц, первый срез с нуля"
+    },
+    {
+      "label": "8–14 сентября",
+      "from": "sep07",
+      "to": "sep14",
+      "note": "Изменение за неделю"
+    }
   ],
   "capitalEvents": {
-    "Сергей": [{"date":"7 июля","text":"Долив до 10 000$: +8 131,60$"}],
-    "Слава": [{"date":"7 июля","text":"Долив до 10 000$: +1 193,20$"}],
-    "Андрей": [{"date":"7 июля","text":"Долив до 10 000$: +862,81$"}]
+    "Сергей": [
+      {
+        "date": "7 июля",
+        "text": "Долив до 10 000$: +8 131,60$"
+      }
+    ],
+    "Слава": [
+      {
+        "date": "7 июля",
+        "text": "Долив до 10 000$: +1 193,20$"
+      }
+    ],
+    "Андрей": [
+      {
+        "date": "7 июля",
+        "text": "Долив до 10 000$: +862,81$"
+      }
+    ]
   },
   "investTeams": {
-    "Никита": {"team":"Никита + Слава","allocation":25000,"pnl":4234,"roi":16.94,"open":1,"closed":1,"ideas":[{"name":"Brent LONG","status":"closed","detail":"закрыта · +$4 234"},{"name":"Natural Gas Henry Hub LONG","status":"open","detail":"в работе · unrealized $0"}]},
-    "Слава": {"team":"Никита + Слава","allocation":25000,"pnl":4234,"roi":16.94,"open":1,"closed":1,"ideas":[{"name":"Brent LONG","status":"closed","detail":"закрыта · +$4 234"},{"name":"Natural Gas Henry Hub LONG","status":"open","detail":"в работе · unrealized $0"}]},
-    "Родион": {"team":"Родион + Сергей","allocation":50000,"pnl":3200,"roi":12.8,"open":2,"closed":0,"ideas":[{"name":"CRCL + GRAM LONG","status":"open","detail":"в работе · CRCL realized +$3 200; unrealized −$580"},{"name":"Oracle LONG","status":"open","detail":"в работе · unrealized −$100"}]},
-    "Сергей": {"team":"Родион + Сергей","allocation":50000,"pnl":3200,"roi":12.8,"open":2,"closed":0,"ideas":[{"name":"CRCL + GRAM LONG","status":"open","detail":"в работе · CRCL realized +$3 200; unrealized −$580"},{"name":"Oracle LONG","status":"open","detail":"в работе · unrealized −$100"}]},
-    "Лиза": {"team":"Лиза + Андрей","allocation":50000,"pnl":2478,"roi":9.91,"open":2,"closed":1,"ideas":[{"name":"UNI LONG","status":"closed","detail":"закрыта · +$2 478"},{"name":"NASDAQ LONG","status":"open","detail":"в работе · unrealized −$1 200"},{"name":"Coffee Arabica LONG","status":"open","detail":"в работе · unrealized −$4 120"}]},
-    "Андрей": {"team":"Лиза + Андрей","allocation":50000,"pnl":2478,"roi":9.91,"open":2,"closed":1,"ideas":[{"name":"UNI LONG","status":"closed","detail":"закрыта · +$2 478"},{"name":"NASDAQ LONG","status":"open","detail":"в работе · unrealized −$1 200"},{"name":"Coffee Arabica LONG","status":"open","detail":"в работе · unrealized −$4 120"}]}
-  }
+    "Никита": {
+      "team": "Никита + Слава",
+      "allocation": 25000,
+      "pnl": 4234,
+      "roi": 16.94,
+      "open": 1,
+      "closed": 1,
+      "ideas": [
+        {
+          "name": "Brent LONG",
+          "status": "closed",
+          "detail": "закрыта · +$4 234"
+        },
+        {
+          "name": "Natural Gas Henry Hub LONG",
+          "status": "open",
+          "detail": "в работе · unrealized $0"
+        }
+      ]
+    },
+    "Слава": {
+      "team": "Никита + Слава",
+      "allocation": 25000,
+      "pnl": 4234,
+      "roi": 16.94,
+      "open": 1,
+      "closed": 1,
+      "ideas": [
+        {
+          "name": "Brent LONG",
+          "status": "closed",
+          "detail": "закрыта · +$4 234"
+        },
+        {
+          "name": "Natural Gas Henry Hub LONG",
+          "status": "open",
+          "detail": "в работе · unrealized $0"
+        }
+      ]
+    },
+    "Родион": {
+      "team": "Родион + Сергей",
+      "allocation": 50000,
+      "pnl": 3200,
+      "roi": 12.8,
+      "open": 2,
+      "closed": 0,
+      "ideas": [
+        {
+          "name": "CRCL + GRAM LONG",
+          "status": "open",
+          "detail": "в работе · CRCL realized +$3 200; unrealized −$580"
+        },
+        {
+          "name": "Oracle LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$100"
+        }
+      ]
+    },
+    "Сергей": {
+      "team": "Родион + Сергей",
+      "allocation": 50000,
+      "pnl": 3200,
+      "roi": 12.8,
+      "open": 2,
+      "closed": 0,
+      "ideas": [
+        {
+          "name": "CRCL + GRAM LONG",
+          "status": "open",
+          "detail": "в работе · CRCL realized +$3 200; unrealized −$580"
+        },
+        {
+          "name": "Oracle LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$100"
+        }
+      ]
+    },
+    "Лиза": {
+      "team": "Лиза + Андрей",
+      "allocation": 50000,
+      "pnl": 2478,
+      "roi": 9.91,
+      "open": 2,
+      "closed": 1,
+      "ideas": [
+        {
+          "name": "UNI LONG",
+          "status": "closed",
+          "detail": "закрыта · +$2 478"
+        },
+        {
+          "name": "NASDAQ LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$1 200"
+        },
+        {
+          "name": "Coffee Arabica LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$4 120"
+        }
+      ]
+    },
+    "Андрей": {
+      "team": "Лиза + Андрей",
+      "allocation": 50000,
+      "pnl": 2478,
+      "roi": 9.91,
+      "open": 2,
+      "closed": 1,
+      "ideas": [
+        {
+          "name": "UNI LONG",
+          "status": "closed",
+          "detail": "закрыта · +$2 478"
+        },
+        {
+          "name": "NASDAQ LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$1 200"
+        },
+        {
+          "name": "Coffee Arabica LONG",
+          "status": "open",
+          "detail": "в работе · unrealized −$4 120"
+        }
+      ]
+    }
+  },
+  "dataQualityNotes": [
+    {
+      "title": "Доливы 7 июля",
+      "text": "Сергей +8 131,60$, Слава +1 193,20$, Андрей +862,81$. Это событие капитала, не торговый PNL."
+    },
+    {
+      "title": "Спот",
+      "text": "Спот нужен в отчетности, но в текущих скриншотах нет читаемых значений. Поле оставлено отдельно как «нет данных»."
+    },
+    {
+      "title": "Расхождение с Word",
+      "text": "Word-обзор указывает июльский PNL +1 670,11$, но главный источник выбран как скриншоты отчетов."
+    },
+    {
+      "title": "Реальный капитал",
+      "text": "Для среза 1–14.09 итоговый суммарный Capital After по трейдерам в предоставленном отчете не указан, поэтому поле оставлено как «нет данных» без предположений."
+    }
+  ],
+  "investMeta": {
+    "asOf": "10 сентября 2026",
+    "totalIdeas": 7,
+    "openIdeas": 5,
+    "closedIdeas": 2,
+    "realizedPnl": 9912,
+    "realizedBase": 75000,
+    "unrealizedPnl": -6000,
+    "activeAllocation": 125000
+  },
+  "investTimeline": [
+    {
+      "date": "22.07",
+      "text": "Открыта идея CRCL + GRAM LONG — команда Родион и Сергей"
+    },
+    {
+      "date": "22.07",
+      "text": "Открыта идея UNI LONG — команда Лиза и Андрей"
+    },
+    {
+      "date": "28.07",
+      "text": "Открыта идея Brent LONG — команда Никита и Слава"
+    },
+    {
+      "date": "30.07",
+      "text": "Закрыта идея UNI LONG — результат +$2 478"
+    },
+    {
+      "date": "06.08",
+      "text": "Открыта идея NASDAQ LONG — команда Лиза и Андрей; позиция удерживается"
+    },
+    {
+      "date": "18.08",
+      "text": "Открыта идея Coffee Arabica LONG — команда Лиза и Андрей"
+    },
+    {
+      "date": "18.08",
+      "text": "Открыта идея Natural Gas Henry Hub LONG — команда Никита и Слава"
+    },
+    {
+      "date": "20.08",
+      "text": "Закрыта идея Brent LONG — результат +$4 234"
+    },
+    {
+      "date": "21.08",
+      "text": "По идее CRCL + GRAM LONG зафиксирован результат по CRCL +$3 200; GRAM LONG удерживается"
+    },
+    {
+      "date": "27.08",
+      "text": "Открыта идея Oracle LONG — команда Родион и Сергей"
+    }
+  ]
 }
