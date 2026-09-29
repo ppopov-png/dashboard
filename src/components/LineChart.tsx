@@ -1,4 +1,11 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  ColorType,
+  CrosshairMode,
+  LineSeries,
+  createChart,
+  type UTCTimestamp,
+} from 'lightweight-charts'
 
 export interface ChartPoint {
   label: string
@@ -19,6 +26,8 @@ interface LineChartProps {
 }
 
 const palette = ['#00d9ff', '#a83cff', '#9bea22', '#ff4fa3', '#66a3ff']
+const BASE_TIME = 1767225600
+const DAY = 86400
 
 function compact(value: number) {
   const sign = value < 0 ? '-' : ''
@@ -33,61 +42,191 @@ function money(value: number) {
   return `${sign}$${Math.abs(value).toLocaleString('ru-RU', { maximumFractionDigits: 2 })}`
 }
 
+function shortLabel(label: string) {
+  return label
+    .replace('сентября', 'сен')
+    .replace('августа', 'авг')
+    .replace('июля', 'июл')
+    .replace('Сентябрь', 'Сен')
+    .replace('Август', 'Авг')
+    .replace('Июль', 'Июл')
+    .slice(0, 9)
+}
+
 export default function LineChart({ title, yLabel, series, height = 320, footer }: LineChartProps) {
-  const width = 760
-  const margin = { top: 42, right: 30, bottom: 66, left: 74 }
-  const innerW = width - margin.left - margin.right
-  const innerH = height - margin.top - margin.bottom
-  const all = series.flatMap((s) => s.points.map((p) => p.value))
-  const pointCount = Math.max(1, ...series.map((s) => s.points.length))
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [hover, setHover] = useState<{ label: string; values: Array<{ name: string; value: number; color: string }> } | null>(null)
 
-  let min = Math.min(0, ...all)
-  let max = Math.max(0, ...all)
-  const spread = Math.max(max - min, 1)
-  const pad = Math.max(spread * 0.14, 100)
-  min -= pad
-  max += pad
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container || series.length === 0) return
 
-  const x = (index: number) => margin.left + (pointCount <= 1 ? innerW / 2 : (index / (pointCount - 1)) * innerW)
-  const y = (value: number) => margin.top + ((max - value) / (max - min)) * innerH
-  const ticks = [min, min + (max - min) / 2, max]
-  const labels = series[0]?.points.map((p) => p.label) ?? []
+    const labelByTime = new Map<number, string>()
+    const maxPoints = Math.max(...series.map((item) => item.points.length), 0)
+
+    for (let index = 0; index < maxPoints; index += 1) {
+      const label = series.find((item) => item.points[index])?.points[index]?.label ?? ''
+      labelByTime.set(BASE_TIME + index * DAY, label)
+    }
+
+    const chart = createChart(container, {
+      autoSize: true,
+      height,
+      layout: {
+        background: { type: ColorType.Solid, color: 'transparent' },
+        textColor: '#71829a',
+        fontFamily: 'Inter, Manrope, Segoe UI, Arial, sans-serif',
+        fontSize: 11,
+        attributionLogo: false,
+      },
+      grid: {
+        vertLines: { color: 'rgba(83, 220, 255, 0.055)' },
+        horzLines: { color: 'rgba(83, 220, 255, 0.075)' },
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+        vertLine: {
+          color: 'rgba(0, 217, 255, 0.42)',
+          width: 1,
+          style: 2,
+          labelBackgroundColor: '#0b1a35',
+        },
+        horzLine: {
+          color: 'rgba(255,255,255,0.18)',
+          width: 1,
+          style: 2,
+          labelBackgroundColor: '#0b1a35',
+        },
+      },
+      rightPriceScale: {
+        borderColor: 'rgba(83, 220, 255, 0.12)',
+        scaleMargins: { top: 0.14, bottom: 0.14 },
+      },
+      timeScale: {
+        borderColor: 'rgba(83, 220, 255, 0.12)',
+        timeVisible: false,
+        secondsVisible: false,
+        rightOffset: 0.5,
+        barSpacing: 58,
+        minBarSpacing: 22,
+        fixLeftEdge: true,
+        fixRightEdge: true,
+        tickMarkFormatter: (time) => {
+          const key = typeof time === 'number' ? time : 0
+          return shortLabel(labelByTime.get(key) ?? '')
+        },
+      },
+      localization: {
+        locale: 'ru-RU',
+        priceFormatter: (price) => compact(price),
+      },
+      handleScroll: {
+        mouseWheel: true,
+        pressedMouseMove: true,
+        horzTouchDrag: true,
+        vertTouchDrag: false,
+      },
+      handleScale: {
+        axisPressedMouseMove: true,
+        mouseWheel: true,
+        pinch: true,
+      },
+    })
+
+    const created = series.map((item, index) => {
+      const color = palette[index % palette.length]
+      const api = chart.addSeries(LineSeries, {
+        color,
+        lineWidth: index === 0 ? 3 : 2,
+        crosshairMarkerVisible: true,
+        crosshairMarkerRadius: 4,
+        crosshairMarkerBorderColor: '#07101e',
+        crosshairMarkerBackgroundColor: color,
+        lastValueVisible: true,
+        priceLineVisible: false,
+        priceFormat: {
+          type: 'custom',
+          minMove: 0.01,
+          formatter: money,
+        },
+      })
+
+      api.setData(item.points.map((point, pointIndex) => ({
+        time: (BASE_TIME + pointIndex * DAY) as UTCTimestamp,
+        value: point.value,
+      })))
+
+      return { api, name: item.name, color }
+    })
+
+    chart.timeScale().fitContent()
+
+    chart.subscribeCrosshairMove((param) => {
+      if (!param.time || !param.point || param.point.x < 0 || param.point.y < 0) {
+        setHover(null)
+        return
+      }
+
+      const key = typeof param.time === 'number' ? param.time : 0
+      const label = labelByTime.get(key)
+      if (!label) {
+        setHover(null)
+        return
+      }
+
+      const values = created.flatMap(({ api, name, color }) => {
+        const item = param.seriesData.get(api)
+        if (!item || !('value' in item)) return []
+        return [{ name, value: item.value, color }]
+      })
+
+      setHover({ label, values })
+    })
+
+    return () => {
+      chart.remove()
+    }
+  }, [height, series])
 
   return (
     <div className="chart-shell">
-      <svg className="line-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={title}>
-        <text className="chart-title" x={margin.left} y={22}>{title}</text>
-        <rect className="chart-frame" x={margin.left} y={margin.top} width={innerW} height={innerH} rx="8" />
-        {ticks.map((tick) => (
-          <g key={tick}>
-            <line className="chart-grid" x1={margin.left} y1={y(tick)} x2={width - margin.right} y2={y(tick)} />
-            <text className="chart-label" x={margin.left - 10} y={y(tick) + 4} textAnchor="end">{compact(tick)}</text>
-          </g>
-        ))}
-        <line className="zero-line" x1={margin.left} y1={y(0)} x2={width - margin.right} y2={y(0)} />
-        {labels.map((label, index) => (
-          <text key={`${label}-${index}`} className="chart-label chart-x-label" x={x(index)} y={height - 28} textAnchor="middle">{label}</text>
-        ))}
-        <text className="chart-label" x={20} y={margin.top + 14} transform={`rotate(-90 20 ${margin.top + 14})`}>{yLabel}</text>
-        {series.map((s, sIndex) => {
-          const color = palette[sIndex % palette.length]
-          const d = s.points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point.value)}`).join(' ')
-          return (
-            <g key={s.name}>
-              <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
-              {s.points.map((point, index) => (
-                <circle key={`${s.name}-${point.label}-${index}`} cx={x(index)} cy={y(point.value)} r="4.2" fill={color} className="chart-dot">
-                  <title>{`${s.name}: ${point.label}, ${money(point.value)}`}</title>
-                </circle>
-              ))}
-            </g>
-          )
-        })}
-      </svg>
-      <div className="chart-legend">
-        {series.map((s, index) => <span key={s.name}><i style={{ background: palette[index % palette.length] }} />{s.name}</span>)}
+      <div className="chart-header">
+        <div>
+          <div className="chart-title-text">{title}</div>
+          <div className="chart-axis-caption">{yLabel}</div>
+        </div>
+        <div className="chart-hint">Колесо — масштаб · drag — перемещение</div>
       </div>
+
+      <div className="lwc-wrap">
+        <div ref={containerRef} className="lwc-chart" style={{ height }} />
+        {hover && (
+          <div className="chart-tooltip">
+            <strong>{hover.label}</strong>
+            {hover.values.map((item) => (
+              <span key={item.name}>
+                <i style={{ background: item.color }} />
+                <b>{item.name}</b>
+                <em>{money(item.value)}</em>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="chart-legend">
+        {series.map((item, index) => (
+          <span key={item.name}>
+            <i style={{ background: palette[index % palette.length] }} />
+            {item.name}
+          </span>
+        ))}
+      </div>
+
       {footer && <div className="chart-footer">{footer}</div>}
+      <div className="chart-attribution">
+        Charts by <a href="https://www.tradingview.com/" target="_blank" rel="noreferrer">TradingView Lightweight Charts™</a>
+      </div>
     </div>
   )
 }
