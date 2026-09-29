@@ -5,6 +5,16 @@ import './styles.css'
 
 type Page = 'overview' | 'futures' | 'invest'
 
+const AUTH_USERNAME = 'admin'
+const AUTH_PASSWORD_SHA256 = '221da04596b5df0c1ace6ea9264197315862ddc512ababbaacd06147bf435fed'
+const AUTH_SESSION_KEY = 'trigonum-dashboard-auth'
+
+async function sha256(value: string) {
+  const bytes = new TextEncoder().encode(value)
+  const digest = await crypto.subtle.digest('SHA-256', bytes)
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
 function Metric({ label, value, note, tone = '' }: { label: string; value: string; note?: string; tone?: string }) {
   return <div className="metric-card"><span>{label}</span><strong className={tone}>{value}</strong>{note && <small>{note}</small>}</div>
 }
@@ -15,8 +25,10 @@ function App() {
   const [periodKey, setPeriodKey] = useState('')
   const [trader, setTrader] = useState('all')
   const [error, setError] = useState('')
+  const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem(AUTH_SESSION_KEY) === '1')
 
   useEffect(() => {
+    if (!authenticated) return
     fetch(`${import.meta.env.BASE_URL}data/dashboard.json`, { cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
@@ -27,7 +39,22 @@ function App() {
         setPeriodKey(payload.periods.at(-1)?.key ?? '')
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Ошибка загрузки данных'))
-  }, [])
+  }, [authenticated])
+
+  const handleLogin = async (username: string, password: string) => {
+    const passwordHash = await sha256(password)
+    if (username !== AUTH_USERNAME || passwordHash !== AUTH_PASSWORD_SHA256) return false
+    sessionStorage.setItem(AUTH_SESSION_KEY, '1')
+    setAuthenticated(true)
+    return true
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem(AUTH_SESSION_KEY)
+    setAuthenticated(false)
+    setData(null)
+    setError('')
+  }
 
   const rows = useMemo(() => data?.data[periodKey] ?? [], [data, periodKey])
   const selectedRows = trader === 'all' ? rows : rows.filter((r) => r.name === trader)
@@ -42,6 +69,7 @@ function App() {
   const totalRoi = totalBase ? totalPnl / totalBase * 100 : 0
   const positive = selectedRows.filter((r) => r.pnl > 0).length
 
+  if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
   if (!data || !period) return <div className="loading">Загрузка Trigonum Trader Intelligence…</div>
 
@@ -71,6 +99,7 @@ function App() {
               {data.traders.map((name) => <option key={name}>{name}</option>)}
             </select>
           </label>
+          <button className="logout-btn" onClick={handleLogout}>Выйти</button>
         </div>
       </header>
 
@@ -154,6 +183,46 @@ function App() {
       </main>
 
       <footer>Данные обновлены: {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</footer>
+    </div>
+  )
+}
+
+function LoginScreen({ onLogin }: { onLogin: (username: string, password: string) => Promise<boolean> }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSubmitting(true)
+    const ok = await onLogin(username, password)
+    setSubmitting(false)
+    if (!ok) {
+      setLoginError('Неверный логин или пароль')
+      return
+    }
+    setLoginError('')
+  }
+
+  return (
+    <div className="auth-screen">
+      <form className="auth-card" onSubmit={submit}>
+        <div className="auth-logo">T</div>
+        <div className="kicker">TRIGONUM · TRADER INTELLIGENCE</div>
+        <h1>Вход в dashboard</h1>
+        <p>Введите логин и пароль для доступа к отчётности трейдеров.</p>
+        <label>
+          Логин
+          <input autoComplete="username" autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <label>
+          Пароль
+          <input type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        {loginError && <div className="auth-error">{loginError}</div>}
+        <button type="submit" disabled={submitting}>{submitting ? 'Проверка…' : 'Войти'}</button>
+      </form>
     </div>
   )
 }
