@@ -4,6 +4,7 @@ export interface Period {
   key: string
   label: string
   type: PeriodType
+  openTradesTotal?: number
 }
 
 export interface TraderRow {
