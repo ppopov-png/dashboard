@@ -68,9 +68,7 @@ function App() {
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
   const aggregateOpenTradesTotal = trader === 'all' && typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
   const openTradesTotal = aggregateOpenTradesTotal ?? rowOpenTradesTotal
-  const tradersWithOpenTrades = openTradeRows.filter((r) => (r.openTrades ?? 0) > 0).length
   const hasOpenTradesTotal = aggregateOpenTradesTotal !== null || (openTradeRows.length === selectedRows.length && selectedRows.length > 0)
-  const hasTraderOpenTradeData = openTradeRows.length === selectedRows.length && selectedRows.length > 0
   const openInvestIdeasTotal = trader === 'all' && typeof period?.openInvestIdeasTotal === 'number' ? period.openInvestIdeasTotal : null
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
@@ -140,10 +138,6 @@ function App() {
               <div className="open-position-stat">
                 <strong>{hasOpenTradesTotal ? openTradesTotal : '—'}</strong>
                 <span>Открыто сделок всего</span>
-              </div>
-              <div className="open-position-stat">
-                <strong>{hasTraderOpenTradeData ? `${tradersWithOpenTrades} из ${selectedRows.length}` : '—'}</strong>
-                <span>Трейдеров с открытыми позициями</span>
               </div>
             </div>
           </section>
