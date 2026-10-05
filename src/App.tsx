@@ -76,6 +76,7 @@ function App() {
   const tradersWithOpenTrades = openTradeRows.filter((r) => (r.openTrades ?? 0) > 0).length
   const hasOpenTradesTotal = aggregateOpenTradesTotal !== null || (openTradeRows.length === selectedRows.length && selectedRows.length > 0)
   const hasTraderOpenTradeData = openTradeRows.length === selectedRows.length && selectedRows.length > 0
+  const openInvestIdeasTotal = trader === 'all' && typeof period?.openInvestIdeasTotal === 'number' ? period.openInvestIdeasTotal : null
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
@@ -196,6 +197,23 @@ function App() {
             <strong>PNL отражает только фактический результат закрытых сделок.</strong>
             <span>Количество открытых сделок показывает текущую рыночную экспозицию и не влияет на отображаемый PNL до их закрытия.</span>
           </div>
+
+          <section className="panel open-positions-panel">
+            <div className="open-positions-main">
+              <div className="open-positions-icon">◇</div>
+              <div>
+                <span className="eyebrow">INVEST IDEAS EXPOSURE</span>
+                <h2>Открытые инвестпредложения</h2>
+                <p>Количество активных инвестпредложений в работе. Нереализованный PNL не отображается.</p>
+              </div>
+            </div>
+            <div className="open-positions-stats">
+              <div className="open-position-stat">
+                <strong>{openInvestIdeasTotal ?? '—'}</strong>
+                <span>Открыто инвестпредложений</span>
+              </div>
+            </div>
+          </section>
 
           <section className="panel hero-panel">
             <div className="section-head"><div><span className="eyebrow">WEEKLY INTELLIGENCE</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
