@@ -5,6 +5,7 @@ export interface Period {
   label: string
   type: PeriodType
   openTradesTotal?: number
+  openInvestIdeasTotal?: number
 }
 
 export interface TraderRow {
