@@ -16,6 +16,7 @@ export interface TraderRow {
   spot: number | null
   capitalAfter: number | null
   capitalStart: number
+  openTrades?: number | null
 }
 
 export interface InvestHistoryItem {
