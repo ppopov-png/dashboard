@@ -187,7 +187,7 @@ function App() {
           </section>
 
           <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">INSTITUTIONAL LEADERBOARD</span><h2>Рейтинг трейдеров</h2><p>Выбранный срез с фактическим PNL, ROI, количеством открытых сделок и разложением по Bybit / MEXC / LMAX / Spot.</p></div></div>
+            <div className="section-head"><div><span className="eyebrow">INSTITUTIONAL LEADERBOARD</span><h2>Рейтинг трейдеров: с начала октября</h2><p>Фактический результат с начала октября: PNL, ROI, количество открытых сделок и разложение по Bybit / MEXC / LMAX / Spot.</p></div></div>
             <div className="table-wrap"><table className="ranking-table"><thead><tr><th>Трейдер</th><th>PNL общий</th><th>ROI</th><th>Открытых сделок</th><th>Bybit</th><th>MEXC</th><th>LMAX</th><th>Спот</th><th>Статус</th></tr></thead><tbody>
               {sorted.map((r, i) => { const [status, tone] = statusFor(r.pnl); return <tr key={r.name}><td><b className="rank">{String(i+1).padStart(2,'0')}</b> {r.name}</td><td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td><td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td><td><span className={typeof r.openTrades === 'number' && r.openTrades > 0 ? 'open-trades-badge active' : 'open-trades-badge'}>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</span></td><td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td><td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td><td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td><td>{fmtMoney(r.spot)}</td><td><span className={`status-badge ${tone}`}>{status}</span></td></tr> })}
             </tbody></table></div>
