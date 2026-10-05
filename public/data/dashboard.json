@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-10-05T00:00:00Z",
   "traders": [
     "Никита",
     "Родион",
@@ -53,6 +53,11 @@
       "key": "sep14",
       "label": "1–14 сентября",
       "type": "snapshot"
+    },
+    {
+      "key": "octSlice",
+      "label": "Октябрь (срез)",
+      "type": "snapshot"
     }
   ],
   "investHistory": {
@@ -100,6 +105,11 @@
       "realized": 9912,
       "allocation": 75000,
       "note": "Realized PNL Invest Ideas сохраняется +$9 912"
+    },
+    "octSlice": {
+      "realized": 9912,
+      "allocation": 75000,
+      "note": "Последний подтвержденный realized PNL Invest Ideas: +$9 912; новых данных по Invest Ideas в октябрьском срезе не предоставлено"
     }
   },
   "data": {
@@ -714,6 +724,74 @@
         "capitalAfter": null,
         "capitalStart": 10000
       }
+    ],
+    "octSlice": [
+      {
+        "name": "Никита",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -535.28,
+        "roi": -0.67,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": -535.28,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 10000
+      }
     ]
   },
   "intervals": [
@@ -770,6 +848,12 @@
       "from": "sep07",
       "to": "sep14",
       "note": "Изменение за неделю"
+    },
+    {
+      "label": "Октябрь · срез",
+      "from": null,
+      "to": "octSlice",
+      "note": "Новый месяц, первый предоставленный срез"
     }
   ],
   "capitalEvents": {
@@ -939,7 +1023,7 @@
     },
     {
       "title": "Реальный капитал",
-      "text": "Для среза 1–14.09 итоговый суммарный Capital After по трейдерам в предоставленном отчете не указан, поэтому поле оставлено как «нет данных» без предположений."
+      "text": "Для октябрьского среза в источнике видны отдельные балансы площадок, но полного итогового Capital After по каждому трейдеру нет. Поле оставлено как «нет данных» без предположений."
     }
   ],
   "investMeta": {
