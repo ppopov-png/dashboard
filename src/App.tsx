@@ -70,9 +70,12 @@ function App() {
   const totalRoi = futuresRoi
   const positive = selectedRows.filter((r) => r.pnl > 0).length
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
-  const openTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
+  const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
+  const aggregateOpenTradesTotal = trader === 'all' && typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
+  const openTradesTotal = aggregateOpenTradesTotal ?? rowOpenTradesTotal
   const tradersWithOpenTrades = openTradeRows.filter((r) => (r.openTrades ?? 0) > 0).length
-  const hasOpenTradeData = openTradeRows.length === selectedRows.length && selectedRows.length > 0
+  const hasOpenTradesTotal = aggregateOpenTradesTotal !== null || (openTradeRows.length === selectedRows.length && selectedRows.length > 0)
+  const hasTraderOpenTradeData = openTradeRows.length === selectedRows.length && selectedRows.length > 0
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
@@ -179,11 +182,11 @@ function App() {
             </div>
             <div className="open-positions-stats">
               <div className="open-position-stat">
-                <strong>{hasOpenTradeData ? openTradesTotal : '—'}</strong>
+                <strong>{hasOpenTradesTotal ? openTradesTotal : '—'}</strong>
                 <span>Открыто сделок всего</span>
               </div>
               <div className="open-position-stat">
-                <strong>{hasOpenTradeData ? `${tradersWithOpenTrades} из ${selectedRows.length}` : '—'}</strong>
+                <strong>{hasTraderOpenTradeData ? `${tradersWithOpenTrades} из ${selectedRows.length}` : '—'}</strong>
                 <span>Трейдеров с открытыми позициями</span>
               </div>
             </div>
