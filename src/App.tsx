@@ -4,7 +4,6 @@ import type { DashboardData } from './types'
 import { fmtMoney, fmtPct, intervalValue, statusFor, toneClass } from './utils'
 import './styles.css'
 
-type Page = 'overview' | 'futures'
 
 const AUTH_USERNAME = 'admin'
 const AUTH_PASSWORD_SHA256 = '221da04596b5df0c1ace6ea9264197315862ddc512ababbaacd06147bf435fed'
@@ -22,7 +21,6 @@ function Metric({ label, value, note, tone = '' }: { label: string; value: strin
 
 function App() {
   const [data, setData] = useState<DashboardData | null>(null)
-  const [page, setPage] = useState<Page>('overview')
   const [periodKey, setPeriodKey] = useState('')
   const [trader, setTrader] = useState('all')
   const [detailTrader, setDetailTrader] = useState('Никита')
@@ -65,9 +63,6 @@ function App() {
   const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
   const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
   const futuresRoi = futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0
-  const totalPnl = futuresPnl
-  const totalBase = futuresAllocation
-  const totalRoi = futuresRoi
   const positive = selectedRows.filter((r) => r.pnl > 0).length
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
@@ -124,47 +119,7 @@ function App() {
       </header>
 
       <main>
-        <nav className="tabs">
-          {(['overview','futures'] as Page[]).map((key, i) => (
-            <button key={key} className={page === key ? 'active' : ''} onClick={() => setPage(key)}>
-              0{i + 1} · {key === 'overview' ? 'Сводка' : 'Фьючерсы'}
-            </button>
-          ))}
-        </nav>
 
-        {page === 'overview' && <>
-          <section className="grid metrics">
-            <Metric label="Общий PNL" value={fmtMoney(totalPnl)} tone={toneClass(totalPnl)} note={period.label} />
-            <Metric label="Общий ROI" value={fmtPct(totalRoi)} tone={toneClass(totalRoi)} note={`База ${fmtMoney(totalBase, 0).replace('+','')}`} />
-            <Metric label="Futures Allocation" value={fmtMoney(futuresAllocation, 0).replace('+','')} note="Капитал фьючерсной стратегии" />
-            <Metric label="Profitable traders" value={`${positive} из ${selectedRows.length}`} note="Положительный PNL" />
-          </section>
-
-          <section className="panel hero-panel">
-            <div className="section-head">
-              <div>
-                <span className="eyebrow">FUTURES PERFORMANCE</span>
-                <h2>Результат фьючерсной торговли</h2>
-                <p>Сводка по фьючерсным стратегиям выбранного периода без учета инвестпредложений.</p>
-              </div>
-              <span className={`pill ${totalPnl > 0 ? 'good' : totalPnl < 0 ? 'bad' : 'warn'}`}>Net result {fmtMoney(totalPnl)}</span>
-            </div>
-            <div className="overview-two-col">
-              <div className="bridge">
-                <Bar label="Фьючерсы" value={futuresPnl} max={Math.max(Math.abs(futuresPnl), 1)} />
-              </div>
-              <div>
-                <span className="eyebrow">CAPITAL ALLOCATION</span>
-                <AllocationRow label="Фьючерсы" value={futuresAllocation} total={Math.max(futuresAllocation, 1)} />
-                <div className="method-note">ROI рассчитывается только по фьючерсной торговле: Futures PNL / Futures Allocation.</div>
-              </div>
-            </div>
-          </section>
-
-          <div className="insight-banner"><strong>Ключевой итог · {period.label}:</strong> Futures PNL {fmtMoney(futuresPnl)} при ROI {fmtPct(futuresRoi)}.</div>
-        </>}
-
-        {page === 'futures' && <>
           <section className="grid metrics">
             <Metric label="Team PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={period.label} />
             <Metric label="Team ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="PNL / Futures allocation" />
@@ -257,7 +212,6 @@ function App() {
             <div className="section-head"><div><span className="eyebrow">SYSTEM NOTES / DATA QUALITY</span><h2>События и качество данных</h2><p>Ограничения источников, которые нужно учитывать в управленческих выводах.</p></div></div>
             <div className="note-grid">{data.dataQualityNotes.map((note) => <div className="note" key={note.title}><strong>{note.title}</strong>{note.text}</div>)}</div>
           </section>
-        </>}
 
       </main>
 
@@ -304,15 +258,6 @@ function LoginScreen({ onLogin }: { onLogin: (username: string, password: string
       </form>
     </div>
   )
-}
-
-function AllocationRow({ label, value, total }: { label: string; value: number; total: number }) {
-  return <div className="allocation-row"><span>{label}</span><div className="allocation-bar"><i style={{ width: `${total ? value / total * 100 : 0}%` }} /></div><strong>{fmtMoney(value,0).replace('+','')}</strong></div>
-}
-
-function Bar({ label, value, max }: { label: string; value: number; max: number }) {
-  const width = Math.max(2, Math.abs(value) / max * 100)
-  return <div className="bar-row"><span>{label}</span><div className="bar-track"><i style={{ width: `${width}%` }} /></div><strong className={toneClass(value)}>{fmtMoney(value)}</strong></div>
 }
 
 export default App
