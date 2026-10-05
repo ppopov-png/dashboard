@@ -57,7 +57,8 @@
     {
       "key": "octSlice",
       "label": "Октябрь (срез)",
-      "type": "snapshot"
+      "type": "snapshot",
+      "openTradesTotal": 9
     }
   ],
   "investHistory": {
