@@ -125,7 +125,7 @@ function App() {
             <Metric label="Worst result" value={worst ? fmtMoney(worst.pnl) : '—'} tone={worst ? toneClass(worst.pnl) : ''} note={worst?.name} />
           </section>
 
-          <section className="panel open-positions-panel">
+          <section className="panel open-positions-panel futures-open-positions">
             <div className="open-positions-main">
               <div className="open-positions-icon">≋</div>
               <div>
