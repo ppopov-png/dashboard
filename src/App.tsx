@@ -100,7 +100,7 @@ function App() {
           <div>
             <div className="kicker">TRIGONUM · TRADER INTELLIGENCE</div>
             <h1>Динамика трейдеров</h1>
-            <p>{period.label} 2026 · Futures + Invest Ideas</p>
+            <p>{period.label} 2026 · Futures</p>
           </div>
         </div>
         <div className="controls">
@@ -188,6 +188,11 @@ function App() {
               </div>
             </div>
           </section>
+
+          <div className="open-positions-note">
+            <strong>PNL отражает только фактический результат закрытых сделок.</strong>
+            <span>Количество открытых сделок показывает текущую рыночную экспозицию и не влияет на отображаемый PNL до их закрытия.</span>
+          </div>
 
           <section className="panel hero-panel">
             <div className="section-head"><div><span className="eyebrow">WEEKLY INTELLIGENCE</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
