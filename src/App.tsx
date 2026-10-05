@@ -69,6 +69,10 @@ function App() {
   const totalBase = futuresAllocation
   const totalRoi = futuresRoi
   const positive = selectedRows.filter((r) => r.pnl > 0).length
+  const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
+  const openTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
+  const tradersWithOpenTrades = openTradeRows.filter((r) => (r.openTrades ?? 0) > 0).length
+  const hasOpenTradeData = openTradeRows.length === selectedRows.length && selectedRows.length > 0
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
@@ -164,6 +168,27 @@ function App() {
             <Metric label="Worst result" value={worst ? fmtMoney(worst.pnl) : '—'} tone={worst ? toneClass(worst.pnl) : ''} note={worst?.name} />
           </section>
 
+          <section className="panel open-positions-panel">
+            <div className="open-positions-main">
+              <div className="open-positions-icon">≋</div>
+              <div>
+                <span className="eyebrow">MARKET EXPOSURE</span>
+                <h2>Открытые позиции</h2>
+                <p>Текущее количество сделок в рынке. Показатель не влияет на фактический PNL до закрытия позиций.</p>
+              </div>
+            </div>
+            <div className="open-positions-stats">
+              <div className="open-position-stat">
+                <strong>{hasOpenTradeData ? openTradesTotal : '—'}</strong>
+                <span>Открыто сделок всего</span>
+              </div>
+              <div className="open-position-stat">
+                <strong>{hasOpenTradeData ? `${tradersWithOpenTrades} из ${selectedRows.length}` : '—'}</strong>
+                <span>Трейдеров с открытыми позициями</span>
+              </div>
+            </div>
+          </section>
+
           <section className="panel hero-panel">
             <div className="section-head"><div><span className="eyebrow">WEEKLY INTELLIGENCE</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
             <div className="two-col">
@@ -181,9 +206,9 @@ function App() {
           </section>
 
           <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">INSTITUTIONAL LEADERBOARD</span><h2>Рейтинг трейдеров</h2><p>Выбранный срез с общим PNL, ROI и разложением по Bybit / MEXC / LMAX / Spot.</p></div></div>
-            <div className="table-wrap"><table className="ranking-table"><thead><tr><th>Трейдер</th><th>PNL общий</th><th>ROI</th><th>Bybit</th><th>MEXC</th><th>LMAX</th><th>Спот</th><th>Статус</th></tr></thead><tbody>
-              {sorted.map((r, i) => { const [status, tone] = statusFor(r.pnl); return <tr key={r.name}><td><b className="rank">{String(i+1).padStart(2,'0')}</b> {r.name}</td><td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td><td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td><td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td><td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td><td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td><td>{fmtMoney(r.spot)}</td><td><span className={`status-badge ${tone}`}>{status}</span></td></tr> })}
+            <div className="section-head"><div><span className="eyebrow">INSTITUTIONAL LEADERBOARD</span><h2>Рейтинг трейдеров</h2><p>Выбранный срез с фактическим PNL, ROI, количеством открытых сделок и разложением по Bybit / MEXC / LMAX / Spot.</p></div></div>
+            <div className="table-wrap"><table className="ranking-table"><thead><tr><th>Трейдер</th><th>PNL общий</th><th>ROI</th><th>Открытых сделок</th><th>Bybit</th><th>MEXC</th><th>LMAX</th><th>Спот</th><th>Статус</th></tr></thead><tbody>
+              {sorted.map((r, i) => { const [status, tone] = statusFor(r.pnl); return <tr key={r.name}><td><b className="rank">{String(i+1).padStart(2,'0')}</b> {r.name}</td><td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td><td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td><td><span className={typeof r.openTrades === 'number' && r.openTrades > 0 ? 'open-trades-badge active' : 'open-trades-badge'}>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</span></td><td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td><td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td><td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td><td>{fmtMoney(r.spot)}</td><td><span className={`status-badge ${tone}`}>{status}</span></td></tr> })}
             </tbody></table></div>
           </section>
 
