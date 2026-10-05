@@ -19,3 +19,5 @@
 .open-positions-note strong{color:#dfe6f5}
 @media(max-width:900px){.open-positions-panel{grid-template-columns:1fr}.open-positions-stats{border-left:0;border-top:1px solid rgba(132,106,255,.2)}}
 @media(max-width:600px){.open-positions-main{align-items:flex-start}.open-positions-stats{grid-template-columns:1fr}.open-position-stat{border-right:0;border-bottom:1px solid rgba(132,106,255,.2);padding:16px 0}.open-position-stat:last-child{border-bottom:0}.open-positions-icon{width:52px;height:52px}}
+
+.futures-open-positions .open-position-stat:nth-child(n+2){display:none}
