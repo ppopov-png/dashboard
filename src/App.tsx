@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import LineChart, { type ChartSeries } from './components/LineChart'
-import type { DashboardData, TraderRow } from './types'
+import type { DashboardData } from './types'
 import { fmtMoney, fmtPct, intervalValue, statusFor, toneClass } from './utils'
 import './styles.css'
 
-type Page = 'overview' | 'futures' | 'invest'
+type Page = 'overview' | 'futures'
 
 const AUTH_USERNAME = 'admin'
 const AUTH_PASSWORD_SHA256 = '221da04596b5df0c1ace6ea9264197315862ddc512ababbaacd06147bf435fed'
@@ -65,11 +65,9 @@ function App() {
   const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
   const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
   const futuresRoi = futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0
-  const invest = data?.investHistory[periodKey] ?? { realized: 0, allocation: 0, note: '' }
-  const investPnl = trader === 'all' ? invest.realized : 0
-  const totalPnl = futuresPnl + investPnl
-  const totalBase = futuresAllocation + (trader === 'all' ? invest.allocation : 0)
-  const totalRoi = totalBase ? totalPnl / totalBase * 100 : 0
+  const totalPnl = futuresPnl
+  const totalBase = futuresAllocation
+  const totalRoi = futuresRoi
   const positive = selectedRows.filter((r) => r.pnl > 0).length
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
@@ -119,9 +117,9 @@ function App() {
 
       <main>
         <nav className="tabs">
-          {(['overview','futures','invest'] as Page[]).map((key, i) => (
+          {(['overview','futures'] as Page[]).map((key, i) => (
             <button key={key} className={page === key ? 'active' : ''} onClick={() => setPage(key)}>
-              0{i + 1} · {key === 'overview' ? 'Сводка' : key === 'futures' ? 'Фьючерсы' : 'Инвестпредложения'}
+              0{i + 1} · {key === 'overview' ? 'Сводка' : 'Фьючерсы'}
             </button>
           ))}
         </nav>
@@ -130,27 +128,32 @@ function App() {
           <section className="grid metrics">
             <Metric label="Общий PNL" value={fmtMoney(totalPnl)} tone={toneClass(totalPnl)} note={period.label} />
             <Metric label="Общий ROI" value={fmtPct(totalRoi)} tone={toneClass(totalRoi)} note={`База ${fmtMoney(totalBase, 0).replace('+','')}`} />
-            <Metric label="Futures PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`ROI ${fmtPct(futuresRoi)}`} />
-            <Metric label="Invest Ideas PNL" value={trader === 'all' ? fmtMoney(invest.realized) : 'Командный показатель'} tone={trader === 'all' ? toneClass(invest.realized) : ''} />
+            <Metric label="Futures Allocation" value={fmtMoney(futuresAllocation, 0).replace('+','')} note="Капитал фьючерсной стратегии" />
+            <Metric label="Profitable traders" value={`${positive} из ${selectedRows.length}`} note="Положительный PNL" />
           </section>
+
           <section className="panel hero-panel">
-            <div className="section-head"><div><span className="eyebrow">PERFORMANCE BRIDGE</span><h2>Источники результата</h2><p>Фьючерсная торговля и реализованный результат инвестидей формируют совокупный результат выбранного периода.</p></div><span className={`pill ${totalPnl > 0 ? 'good' : totalPnl < 0 ? 'bad' : 'warn'}`}>Net result {fmtMoney(totalPnl)}</span></div>
+            <div className="section-head">
+              <div>
+                <span className="eyebrow">FUTURES PERFORMANCE</span>
+                <h2>Результат фьючерсной торговли</h2>
+                <p>Сводка по фьючерсным стратегиям выбранного периода без учета инвестпредложений.</p>
+              </div>
+              <span className={`pill ${totalPnl > 0 ? 'good' : totalPnl < 0 ? 'bad' : 'warn'}`}>Net result {fmtMoney(totalPnl)}</span>
+            </div>
             <div className="overview-two-col">
               <div className="bridge">
-                <Bar label="Фьючерсы" value={futuresPnl} max={Math.max(Math.abs(futuresPnl), Math.abs(investPnl), Math.abs(totalPnl), 1)} />
-                <Bar label="Инвестидеи" value={investPnl} max={Math.max(Math.abs(futuresPnl), Math.abs(investPnl), Math.abs(totalPnl), 1)} />
-                <Bar label="Итого" value={totalPnl} max={Math.max(Math.abs(futuresPnl), Math.abs(investPnl), Math.abs(totalPnl), 1)} />
+                <Bar label="Фьючерсы" value={futuresPnl} max={Math.max(Math.abs(futuresPnl), 1)} />
               </div>
               <div>
                 <span className="eyebrow">CAPITAL ALLOCATION</span>
-                <AllocationRow label="Фьючерсы" value={futuresAllocation} total={Math.max(totalBase, 1)} />
-                <AllocationRow label="Invest Ideas" value={trader === 'all' ? invest.allocation : 0} total={Math.max(totalBase, 1)} />
-                <div className="method-note">Для консолидированного ROI используется Futures Allocation + Realized Invest-Allocation выбранного периода.</div>
+                <AllocationRow label="Фьючерсы" value={futuresAllocation} total={Math.max(futuresAllocation, 1)} />
+                <div className="method-note">ROI рассчитывается только по фьючерсной торговле: Futures PNL / Futures Allocation.</div>
               </div>
             </div>
           </section>
-          <div className="insight-banner"><strong>Ключевой итог · {period.label}:</strong> Futures PNL {fmtMoney(futuresPnl)} при ROI {fmtPct(futuresRoi)}. Invest Ideas Realized PNL {fmtMoney(invest.realized)}. Совокупный результат {fmtMoney(totalPnl)}.</div>
-          {trader !== 'all' && <TraderCard row={selectedRows[0]} team={data.investTeams[trader]} />}
+
+          <div className="insight-banner"><strong>Ключевой итог · {period.label}:</strong> Futures PNL {fmtMoney(futuresPnl)} при ROI {fmtPct(futuresRoi)}.</div>
         </>}
 
         {page === 'futures' && <>
@@ -205,30 +208,6 @@ function App() {
           </section>
         </>}
 
-        {page === 'invest' && <>
-          <section className="grid metrics five">
-            <Metric label="Команды" value="3" note="по 2 трейдера в каждой" />
-            <Metric label="Идей всего" value={String(data.investMeta.totalIdeas)} note={`${data.investMeta.openIdeas} в работе · ${data.investMeta.closedIdeas} закрыто`} />
-            <Metric label="Realized PNL" value={fmtMoney(data.investMeta.realizedPnl)} tone="pos" note="Brent + UNI + CRCL realized" />
-            <Metric label="Realized ROI" value={fmtPct(data.investMeta.realizedPnl / data.investMeta.realizedBase * 100)} tone="pos" note={`от расчетной базы $${(data.investMeta.realizedBase/1000).toFixed(0)}K`} />
-            <Metric label="Активная аллокация" value={`$${(data.investMeta.activeAllocation/1000).toFixed(0)}K`} note={`${data.investMeta.openIdeas} активных идей`} />
-          </section>
-          <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">TEAMS & ALLOCATION</span><h2>Команды и результаты</h2><p>Текущая активная аллокация: $25K / $50K / $50K. Доходность в исходном отчете рассчитывается от стартовой базы $25 000 на команду.</p></div></div>
-            <div className="table-wrap"><table><thead><tr><th>Команда</th><th>Аллокация</th><th>Идей в работе</th><th>Закрыто</th><th>Реализованный результат</th><th>Доходность</th><th>Статус</th></tr></thead><tbody>
-              {['Никита','Родион','Лиза'].map((name) => { const t=data.investTeams[name]; return <tr key={name}><td><strong>{t.team}</strong></td><td>{fmtMoney(t.allocation,0).replace('+','')}</td><td>{t.open}</td><td>{t.closed}</td><td className="pos"><strong>{fmtMoney(t.pnl)}</strong></td><td className="pos">{fmtPct(t.roi)}</td><td>{t.ideas.map((idea)=>`${idea.name} — ${idea.status === 'open' ? 'в работе' : 'закрыта'}`).join('; ')}</td></tr> })}
-            </tbody></table></div>
-          </section>
-          <section className="panel hero-panel">
-            <div className="section-head"><div><span className="eyebrow">PORTFOLIO STATUS · {data.investMeta.asOf}</span><h2>Портфель инвестидей</h2><p>{data.investMeta.totalIdeas} идей: {data.investMeta.openIdeas} остаются в работе, {data.investMeta.closedIdeas} закрыты. Суммарный Unrealized PNL открытых идей: {fmtMoney(data.investMeta.unrealizedPnl)}.</p></div><div className="badge-stack"><span className="status-badge good">В работе {data.investMeta.openIdeas}</span><span className="status-badge">Закрыто {data.investMeta.closedIdeas}</span></div></div>
-            <div className="idea-list">{uniqueIdeas(data).map((idea) => <div className="idea-row" key={idea.name}><div className="idea-name">{idea.name}</div><div className={`idea-status ${idea.status}`}>{idea.status === 'closed' ? 'Закрыта' : 'В работе'}</div><div className={idea.detail.includes('−') ? 'idea-result neg' : idea.detail.includes('+') ? 'idea-result pos' : 'idea-result'}>{idea.detail}</div></div>)}</div>
-            <div className="method-note">Realized PNL {fmtMoney(data.investMeta.realizedPnl)} включает только зафиксированный результат. Unrealized PNL {fmtMoney(data.investMeta.unrealizedPnl)} в консолидированный realized result не включен.</div>
-          </section>
-          <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">IDEA TIMELINE</span><h2>Хронология инвестидей</h2><p>Ключевые открытия и фиксации результата по данным отчета.</p></div></div>
-            <div className="timeline">{data.investTimeline.map((item) => <div className="timeline-row" key={`${item.date}-${item.text}`}><time>{item.date}</time><span>{item.text}</span></div>)}</div>
-          </section>
-        </>}
       </main>
 
       <footer>Данные обновлены: {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</footer>
@@ -280,32 +259,9 @@ function AllocationRow({ label, value, total }: { label: string; value: number; 
   return <div className="allocation-row"><span>{label}</span><div className="allocation-bar"><i style={{ width: `${total ? value / total * 100 : 0}%` }} /></div><strong>{fmtMoney(value,0).replace('+','')}</strong></div>
 }
 
-function uniqueIdeas(data: DashboardData) {
-  const map = new Map<string, DashboardData['investTeams'][string]['ideas'][number]>()
-  Object.values(data.investTeams).forEach((team) => team.ideas.forEach((idea) => map.set(idea.name, idea)))
-  return Array.from(map.values())
-}
-
 function Bar({ label, value, max }: { label: string; value: number; max: number }) {
   const width = Math.max(2, Math.abs(value) / max * 100)
   return <div className="bar-row"><span>{label}</span><div className="bar-track"><i style={{ width: `${width}%` }} /></div><strong className={toneClass(value)}>{fmtMoney(value)}</strong></div>
-}
-
-function TraderCard({ row, team }: { row?: TraderRow; team?: DashboardData['investTeams'][string] }) {
-  if (!row) return null
-  return <section className="panel overview-trader-section">
-    <div className="overview-trader-head"><div><span className="eyebrow">MONTHLY PERFORMANCE · SELECTED TRADER</span><h2>{row.name}</h2></div></div>
-    <div className="trader-card">
-      <div><span>Futures PNL</span><strong className={toneClass(row.pnl)}>{fmtMoney(row.pnl)}</strong></div>
-      <div><span>Futures ROI</span><strong className={toneClass(row.roi)}>{fmtPct(row.roi)}</strong></div>
-      <div><span>Капитал на конец</span><strong>{row.capitalAfter == null ? 'нет данных' : fmtMoney(row.capitalAfter).replace('+','')}</strong></div>
-      {team && <div><span>Команда Invest Ideas</span><strong>{team.team}</strong></div>}
-    </div>
-    {team && <div className="overview-trader-bottom">
-      <div className="overview-trader-card"><h3>Результат команды по инвестидеям</h3><div className="overview-trader-row"><span>Realized PNL команды</span><strong className={toneClass(team.pnl)}>{fmtMoney(team.pnl)}</strong></div><div className="overview-trader-row"><span>ROI команды</span><strong className={toneClass(team.roi)}>{fmtPct(team.roi)}</strong></div><div className="overview-trader-row"><span>Аллокация команды</span><strong>{fmtMoney(team.allocation,0).replace('+','')}</strong></div><div className="overview-trader-row"><span>Статус идей</span><strong>{team.open} в работе · {team.closed} закрыто</strong></div></div>
-      <div className="overview-trader-card"><h3>Инвестидеи команды</h3><div className="overview-idea-tags">{team.ideas.map((idea) => <span key={idea.name} className={`overview-idea-tag ${idea.status}`}><strong>{idea.name}</strong> · {idea.detail}</span>)}</div><div className="method-note">Invest Ideas — командный результат двух трейдеров. Он не делится пополам и не прибавляется к личному Futures PNL без отдельной методики распределения.</div></div>
-    </div>}
-  </section>
 }
 
 export default App
