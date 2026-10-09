@@ -4,6 +4,8 @@ import type { DashboardData } from './types'
 import { fmtMoney, fmtPct, intervalValue, statusFor, toneClass } from './utils'
 import './styles.css'
 import teamBg from './assets/trigonum-team-bg.svg'
+import trigonumLogo from './assets/trigonum-logo.svg'
+import trigonumMark from './assets/trigonum-mark.svg'
 
 
 const AUTH_USERNAME = 'admin'
@@ -108,8 +110,7 @@ function App() {
         >
           <div className="reference-nav">
             <div className="reference-logo">
-              <span className="reference-logo-mark">T</span>
-              <strong>TRIGONUM</strong>
+              <img src={trigonumLogo} alt="TRIGONUM" />
             </div>
 
             <nav className="reference-nav-pills" aria-label="Навигация по дашборду">
@@ -137,6 +138,7 @@ function App() {
             <p>Командная аналитика. Контроль.<br />Реальные результаты.</p>
           </div>
 
+          <img className="reference-hero-mark" src={trigonumMark} alt="" aria-hidden="true" />
           <div className="reference-hero-words" aria-hidden="true">
             <span>ЛЮДИ</span>
             <span>СТРАТЕГИИ</span>
