@@ -74,7 +74,6 @@ function App() {
   const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
   const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
   const futuresRoi = futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0
-  const positive = selectedRows.filter((r) => r.pnl > 0).length
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
   const aggregateOpenTradesTotal = trader === 'all' && typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
@@ -87,7 +86,6 @@ function App() {
   if (!data || !period) return <div className="loading">Загрузка Trigonum Trader Intelligence…</div>
 
   const sorted = [...selectedRows].sort((a, b) => b.pnl - a.pnl)
-  const worst = selectedRows.length ? selectedRows.reduce((a, b) => a.pnl < b.pnl ? a : b) : null
   const detailRow = rows.find((r) => r.name === detailTrader) ?? rows[0]
   const teamSeries: ChartSeries[] = [
     { name: 'PNL среза', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).reduce((sum, row) => sum + row.pnl, 0) })) },
