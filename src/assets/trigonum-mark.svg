@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Trigonum">
+  <defs>
+    <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#A7FF28"/><stop offset="1" stop-color="#67F22E"/></linearGradient>
+    <linearGradient id="gC" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#22DCFF"/><stop offset="1" stop-color="#12A9ED"/></linearGradient>
+    <linearGradient id="gP" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#C53BFF"/><stop offset="1" stop-color="#A92BFF"/></linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A7FF28"/><stop offset=".5" stop-color="#22DCFF"/><stop offset="1" stop-color="#C53BFF"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect x="26" y="26" width="268" height="268" rx="58" fill="#050815" stroke="url(#stroke)" stroke-width="4" filter="url(#glow)"/>
+  <g transform="translate(66 78)" filter="url(#glow)">
+    <polygon points="0,10 76,10 104,42 0,42" fill="url(#gL)"/>
+    <polygon points="104,42 132,10 188,10 188,42" fill="url(#gP)"/>
+    <polygon points="91,42 117,42 117,166 91,166" fill="url(#gC)"/>
+  </g>
+  <ellipse cx="160" cy="162" rx="126" ry="52" fill="none" stroke="url(#stroke)" stroke-width="3" opacity=".9" transform="rotate(-12 160 162)" filter="url(#glow)"/>
+</svg>
