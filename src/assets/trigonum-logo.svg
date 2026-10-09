@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 92" role="img" aria-label="TRIGONUM">
+  <defs>
+    <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#A7FF28"/><stop offset="1" stop-color="#67F22E"/></linearGradient>
+    <linearGradient id="gC" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#22DCFF"/><stop offset="1" stop-color="#12A9ED"/></linearGradient>
+    <linearGradient id="gP" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#C53BFF"/><stop offset="1" stop-color="#A92BFF"/></linearGradient>
+  </defs>
+  <g transform="translate(2 8)">
+    <polygon points="0,8 48,8 66,28 0,28" fill="url(#gL)"/>
+    <polygon points="66,28 84,8 134,8 134,28" fill="url(#gP)"/>
+    <polygon points="55,28 77,28 77,76 55,76" fill="url(#gC)"/>
+  </g>
+  <text x="158" y="62" fill="#FFFFFF" font-family="Inter,Arial,sans-serif" font-size="48" font-weight="800" letter-spacing="1.2">TRIGONUM</text>
+</svg>
