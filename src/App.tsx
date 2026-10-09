@@ -16,8 +16,18 @@ async function sha256(value: string) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-function Metric({ label, value, note, tone = '' }: { label: string; value: string; note?: string; tone?: string }) {
-  return <div className="metric-card"><span>{label}</span><strong className={tone}>{value}</strong>{note && <small>{note}</small>}</div>
+function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan' }: { label: string; value: string; note?: string; tone?: string; icon?: string; accent?: 'lime' | 'cyan' | 'purple' | 'violet' }) {
+  return (
+    <div className={`metric-card metric-card--${accent}`}>
+      <div className="metric-card-top">
+        <span>{label}</span>
+        <i className="metric-icon">{icon}</i>
+      </div>
+      <strong className={tone}>{value}</strong>
+      {note && <small>{note}</small>}
+      <div className="metric-signal" aria-hidden="true"><b /><b /><b /><b /><b /><b /></div>
+    </div>
+  )
 }
 
 function App() {
@@ -115,13 +125,17 @@ function App() {
           </div>
         </aside>
         <section className="workspace">
-      <header className="topbar">
+      <header className="topbar premium-topbar">
         <div className="brand">
           <div>
             <div className="kicker">TRIGONUM · КОМАНДНЫЙ ДАШБОРД</div>
             <h1>Аналитика команды</h1>
             <p>{period.label} 2026 · Futures</p>
           </div>
+        </div>
+        <div className="topbar-status">
+          <span><i />LIVE DATA</span>
+          <small>обновлено {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</small>
         </div>
         <div className="controls">
           <label>Период
@@ -154,11 +168,11 @@ function App() {
             </div>
           </section>
 
-          <section className="grid metrics">
-            <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note="Фактический результат" />
-            <Metric label="ROI команды" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="С начала периода" />
-            <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note="Текущая экспозиция" />
-            <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Активные идеи" />
+          <section className="grid metrics premium-metrics">
+            <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note="Фактический результат" icon="↗" accent="lime" />
+            <Metric label="ROI команды" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="С начала периода" icon="◎" accent="cyan" />
+            <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note="Текущая экспозиция" icon="⌁" accent="purple" />
+            <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Активные идеи" icon="◇" accent="violet" />
           </section>
 
           <section id="dynamics" className="panel hero-panel">
@@ -188,24 +202,61 @@ function App() {
             </tbody></table></div>
           </section>
 
-          <section id="trader" className="panel">
-            <div className="section-head"><div><span className="eyebrow">ПРОФИЛЬ ТРЕЙДЕРА</span><h2>Карточка трейдера</h2><p>Недельная динамика фьючерсной торговли и капитала выбранного трейдера.</p></div></div>
-            <div className="trader-layout">
-              <div className="trader-list">{data.traders.map((name) => {
-                const r = rows.find((x) => x.name === name)
-                return <button key={name} className={detailTrader === name ? 'active' : ''} onClick={() => { setDetailTrader(name); setTrader(name) }}><span>{name}</span><strong className={r ? toneClass(r.pnl) : ''}>{r ? fmtMoney(r.pnl) : '—'}</strong></button>
-              })}</div>
-              <div className="detail-panel">
-                <div className="detail-heading"><h3>{detailTrader}</h3><span>{period.label}</span></div>
-                {detailRow && <div className="detail-grid"><div className="mini"><span>PNL selected snapshot</span><strong className={toneClass(detailRow.pnl)}>{fmtMoney(detailRow.pnl)}</strong></div><div className="mini"><span>ROI selected snapshot</span><strong className={toneClass(detailRow.roi)}>{fmtPct(detailRow.roi)}</strong></div><div className="mini"><span>Capital after</span><strong>{detailRow.capitalAfter == null ? 'нет данных' : fmtMoney(detailRow.capitalAfter).replace('+','')}</strong></div></div>}
-                <LineChart title={`${detailTrader} exchange breakdown`} yLabel="PNL, $" series={traderSeries} height={340} footer={(data.capitalEvents[detailTrader] ?? []).length ? <ul className="events">{data.capitalEvents[detailTrader].map((event) => <li key={`${event.date}-${event.text}`}><time>{event.date}</time><span>{event.text}</span></li>)}</ul> : null} />
+          <section id="trader" className="panel trader-profile-panel">
+            <div className="section-head"><div><span className="eyebrow">ПРОФИЛЬ ТРЕЙДЕРА</span><h2>Карточка трейдера</h2><p>Персональный срез результатов и динамики выбранного трейдера.</p></div><span className="profile-period">{period.label}</span></div>
+            <div className="trader-premium-layout">
+              <div className="trader-directory">
+                <div className="trader-directory-title">Команда</div>
+                {data.traders.map((name) => {
+                  const r = rows.find((x) => x.name === name)
+                  return (
+                    <button key={name} className={detailTrader === name ? 'active' : ''} onClick={() => { setDetailTrader(name); setTrader(name) }}>
+                      <span className="trader-avatar">{name.slice(0, 1)}</span>
+                      <span className="trader-directory-name">{name}</span>
+                      <strong className={r ? toneClass(r.pnl) : ''}>{r ? fmtMoney(r.pnl) : '—'}</strong>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="trader-profile-main">
+                <div className="trader-profile-head">
+                  <div className="trader-profile-identity">
+                    <div className="trader-profile-avatar">{detailTrader.slice(0, 1)}</div>
+                    <div>
+                      <span>TRIGONUM TRADER</span>
+                      <h3>{detailTrader}</h3>
+                      <small>Futures · {period.label} 2026</small>
+                    </div>
+                  </div>
+                  <div className="profile-live"><i />ACTIVE</div>
+                </div>
+                {detailRow && (
+                  <div className="profile-kpis">
+                    <div><span>PNL</span><strong className={toneClass(detailRow.pnl)}>{fmtMoney(detailRow.pnl)}</strong><small>фактический</small></div>
+                    <div><span>ROI</span><strong className={toneClass(detailRow.roi)}>{fmtPct(detailRow.roi)}</strong><small>за период</small></div>
+                    <div><span>Открыто сделок</span><strong>{typeof detailRow.openTrades === 'number' ? detailRow.openTrades : '—'}</strong><small>в рынке</small></div>
+                    <div><span>Капитал</span><strong>{detailRow.capitalAfter == null ? '—' : fmtMoney(detailRow.capitalAfter).replace('+','')}</strong><small>после периода</small></div>
+                  </div>
+                )}
+                <LineChart title={`${detailTrader} · Динамика по площадкам`} yLabel="PNL, $" series={traderSeries} height={340} footer={(data.capitalEvents[detailTrader] ?? []).length ? <ul className="events">{data.capitalEvents[detailTrader].map((event) => <li key={`${event.date}-${event.text}`}><time>{event.date}</time><span>{event.text}</span></li>)}</ul> : null} />
               </div>
             </div>
           </section>
 
-          <section id="quality" className="panel">
-            <div className="section-head"><div><span className="eyebrow">КАЧЕСТВО ДАННЫХ</span><h2>События и качество данных</h2><p>Ограничения источников, которые нужно учитывать в управленческих выводах.</p></div></div>
-            <div className="note-grid">{data.dataQualityNotes.map((note) => <div className="note" key={note.title}><strong>{note.title}</strong>{note.text}</div>)}</div>
+          <section id="quality" className="panel quality-panel">
+            <div className="section-head"><div><span className="eyebrow">КАЧЕСТВО ДАННЫХ</span><h2>Контроль источников</h2><p>Ключевые ограничения и события, которые важно учитывать при интерпретации отчёта.</p></div><span className="quality-state"><i />Проверено</span></div>
+            <div className="quality-grid">
+              {data.dataQualityNotes.map((note, index) => (
+                <div className="quality-card" key={note.title}>
+                  <div className="quality-card-index">{String(index + 1).padStart(2, '0')}</div>
+                  <div className="quality-card-content">
+                    <strong>{note.title}</strong>
+                    <p>{note.text}</p>
+                  </div>
+                  <span className="quality-card-mark">◇</span>
+                </div>
+              ))}
+            </div>
           </section>
 
       </main>
