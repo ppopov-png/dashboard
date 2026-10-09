@@ -92,12 +92,34 @@ function App() {
 
   return (
     <div className="app">
+      <div className="dashboard-shell">
+        <aside className="side-nav">
+          <div className="side-brand">
+            <div className="side-brand-mark">T</div>
+            <div>
+              <strong>TRIGONUM</strong>
+              <span>TEAM INTELLIGENCE</span>
+            </div>
+          </div>
+          <nav>
+            <a className="active" href="#overview"><span>◈</span>Команда</a>
+            <a href="#dynamics"><span>⌁</span>Аналитика</a>
+            <a href="#leaderboard"><span>▥</span>Трейдеры</a>
+            <a href="#trader"><span>△</span>Карточка трейдера</a>
+            <a href="#quality"><span>◇</span>Качество данных</a>
+          </nav>
+          <div className="side-pro">
+            <span>TRIGONUM</span>
+            <strong>Больше чем торговля</strong>
+            <small>Аналитика. Контроль. Результат.</small>
+          </div>
+        </aside>
+        <section className="workspace">
       <header className="topbar">
         <div className="brand">
-          <div className="brand-mark">T</div>
           <div>
-            <div className="kicker">TRIGONUM · TRADER INTELLIGENCE</div>
-            <h1>Динамика трейдеров</h1>
+            <div className="kicker">TRIGONUM · КОМАНДНЫЙ ДАШБОРД</div>
+            <h1>Аналитика команды</h1>
             <p>{period.label} 2026 · Futures</p>
           </div>
         </div>
@@ -119,7 +141,7 @@ function App() {
 
       <main>
 
-          <section className="team-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,5,12,.97) 0%, rgba(2,5,12,.86) 36%, rgba(2,5,12,.34) 74%, rgba(2,5,12,.18) 100%), url(${teamBg})` }}>
+          <section id="overview" className="team-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,5,12,.97) 0%, rgba(2,5,12,.86) 36%, rgba(2,5,12,.34) 74%, rgba(2,5,12,.18) 100%), url(${teamBg})` }}>
             <div className="team-hero-copy">
               <div className="team-hero-kicker">TRIGONUM · КОМАНДНЫЙ ДАШБОРД</div>
               <h2>Больше чем <span>торговля</span></h2>
@@ -133,75 +155,40 @@ function App() {
           </section>
 
           <section className="grid metrics">
-            <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={period.label} />
-            <Metric label="ROI команды" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="PNL / Futures allocation" />
-            <Metric label="Прибыльных трейдеров" value={`${positive} из ${selectedRows.length}`} note="Положительный результат" />
-            <Metric label="Худший результат" value={worst ? fmtMoney(worst.pnl) : '—'} tone={worst ? toneClass(worst.pnl) : ''} note={worst?.name} />
+            <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note="Фактический результат" />
+            <Metric label="ROI команды" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="С начала периода" />
+            <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note="Текущая экспозиция" />
+            <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Активные идеи" />
           </section>
 
-          <section className="panel open-positions-panel futures-open-positions">
-            <div className="open-positions-main">
-              <div className="open-positions-icon">≋</div>
-              <div>
-                <span className="eyebrow">РЫНОЧНАЯ ЭКСПОЗИЦИЯ</span>
-                <h2>Открытые позиции</h2>
-                <p>Текущее количество сделок в рынке. Показатель не влияет на фактический PNL до закрытия позиций.</p>
-              </div>
-            </div>
-            <div className="open-positions-stats">
-              <div className="open-position-stat">
-                <strong>{hasOpenTradesTotal ? openTradesTotal : '—'}</strong>
-                <span>Открыто сделок всего</span>
-              </div>
-            </div>
-          </section>
-
-          <div className="open-positions-note">
-            <strong>PNL отражает только фактический результат закрытых сделок.</strong>
-            <span>Количество открытых сделок показывает текущую рыночную экспозицию и не влияет на отображаемый PNL до их закрытия.</span>
-          </div>
-
-          <section className="panel open-positions-panel">
-            <div className="open-positions-main">
-              <div className="open-positions-icon">◇</div>
-              <div>
-                <span className="eyebrow">ИНВЕСТИДЕИ</span>
-                <h2>Открытые инвестпредложения</h2>
-                <p>Количество активных инвестпредложений в работе. Нереализованный PNL не отображается.</p>
-              </div>
-            </div>
-            <div className="open-positions-stats">
-              <div className="open-position-stat">
-                <strong>{openInvestIdeasTotal ?? '—'}</strong>
-                <span>Открыто инвестпредложений</span>
+          <section id="dynamics" className="panel hero-panel">
+            <div className="section-head"><div><span className="eyebrow">ДИНАМИКА КОМАНДЫ</span><h2>Недельная динамика</h2><p>Фактический результат команды по отчетным срезам.</p></div><span className="pill warn">PNL — только закрытые сделки</span></div>
+            <div className="two-col dashboard-overview-grid">
+              <LineChart title="Командный PNL" yLabel="PNL, $" series={teamSeries} />
+              <div className="leaderboard-card">
+                <div className="leaderboard-card-head"><div><span className="eyebrow">РЕЙТИНГ</span><h3>Лучшие трейдеры</h3></div><span>с начала октября</span></div>
+                <div className="leaderboard-list">
+                  {sorted.slice(0, 6).map((r, i) => (
+                    <div className="leaderboard-row" key={r.name}>
+                      <b>{i + 1}</b>
+                      <span>{r.name}</span>
+                      <strong className={toneClass(r.pnl)}>{fmtMoney(r.pnl)}</strong>
+                      <em className={toneClass(r.roi)}>{fmtPct(r.roi)}</em>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
-          <section className="panel hero-panel">
-            <div className="section-head"><div><span className="eyebrow">ДИНАМИКА КОМАНДЫ</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
-            <div className="two-col">
-              <LineChart title="Team performance" yLabel="PNL, $" series={teamSeries} />
-              <div className="period-panel">
-                <div className="panel-title"><span>Period moves</span><span>PNL</span></div>
-                <div className="table-wrap compact-table"><table><thead><tr><th>Интервал</th><th>PNL</th><th>Контекст</th></tr></thead><tbody>
-                  {data.intervals.map((item) => {
-                    const value = intervalValue(data, item)
-                    return <tr key={item.label}><td>{item.label}</td><td className={toneClass(value)}>{fmtMoney(value)}</td><td><span className={`status-badge ${value > 0 ? 'good' : value < 0 ? 'bad' : 'warn'}`}>{value > 0 ? 'up' : value < 0 ? 'down' : 'flat'}</span> {item.note}</td></tr>
-                  })}
-                </tbody></table></div>
-              </div>
-            </div>
-          </section>
-
-          <section className="panel">
+          <section id="leaderboard" className="panel">
             <div className="section-head"><div><span className="eyebrow">КОМАНДА</span><h2>Рейтинг трейдеров: с начала октября</h2><p>Фактический результат с начала октября: PNL, ROI, количество открытых сделок и разложение по Bybit / MEXC / LMAX / Spot.</p></div></div>
             <div className="table-wrap"><table className="ranking-table"><thead><tr><th>Трейдер</th><th>PNL общий</th><th>ROI</th><th>Открытых сделок</th><th>Bybit</th><th>MEXC</th><th>LMAX</th><th>Спот</th><th>Статус</th></tr></thead><tbody>
               {sorted.map((r, i) => { const [status, tone] = statusFor(r.pnl); return <tr key={r.name}><td><b className="rank">{String(i+1).padStart(2,'0')}</b> {r.name}</td><td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td><td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td><td><span className={typeof r.openTrades === 'number' && r.openTrades > 0 ? 'open-trades-badge active' : 'open-trades-badge'}>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</span></td><td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td><td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td><td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td><td>{fmtMoney(r.spot)}</td><td><span className={`status-badge ${tone}`}>{status}</span></td></tr> })}
             </tbody></table></div>
           </section>
 
-          <section className="panel">
+          <section id="trader" className="panel">
             <div className="section-head"><div><span className="eyebrow">ПРОФИЛЬ ТРЕЙДЕРА</span><h2>Карточка трейдера</h2><p>Недельная динамика фьючерсной торговли и капитала выбранного трейдера.</p></div></div>
             <div className="trader-layout">
               <div className="trader-list">{data.traders.map((name) => {
@@ -216,7 +203,7 @@ function App() {
             </div>
           </section>
 
-          <section className="panel">
+          <section id="quality" className="panel">
             <div className="section-head"><div><span className="eyebrow">КАЧЕСТВО ДАННЫХ</span><h2>События и качество данных</h2><p>Ограничения источников, которые нужно учитывать в управленческих выводах.</p></div></div>
             <div className="note-grid">{data.dataQualityNotes.map((note) => <div className="note" key={note.title}><strong>{note.title}</strong>{note.text}</div>)}</div>
           </section>
@@ -224,6 +211,8 @@ function App() {
       </main>
 
       <footer>Данные обновлены: {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</footer>
+        </section>
+      </div>
     </div>
   )
 }
