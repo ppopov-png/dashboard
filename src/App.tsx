@@ -3,6 +3,7 @@ import LineChart, { type ChartSeries } from './components/LineChart'
 import type { DashboardData } from './types'
 import { fmtMoney, fmtPct, intervalValue, statusFor, toneClass } from './utils'
 import './styles.css'
+import teamBg from './assets/trigonum-team-bg.svg'
 
 
 const AUTH_USERNAME = 'admin'
@@ -118,18 +119,31 @@ function App() {
 
       <main>
 
+          <section className="team-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(2,5,12,.97) 0%, rgba(2,5,12,.86) 36%, rgba(2,5,12,.34) 74%, rgba(2,5,12,.18) 100%), url(${teamBg})` }}>
+            <div className="team-hero-copy">
+              <div className="team-hero-kicker">TRIGONUM · КОМАНДНЫЙ ДАШБОРД</div>
+              <h2>Больше чем <span>торговля</span></h2>
+              <p>Командная аналитика. Контроль. Реальные результаты.</p>
+              <div className="team-hero-meta">
+                <span>Фьючерсы</span>
+                <span>Инвестпредложения</span>
+                <span>{period.label} 2026</span>
+              </div>
+            </div>
+          </section>
+
           <section className="grid metrics">
-            <Metric label="Team PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={period.label} />
-            <Metric label="Team ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="PNL / Futures allocation" />
-            <Metric label="Profitable traders" value={`${positive} из ${selectedRows.length}`} note="Стабильность команды" />
-            <Metric label="Worst result" value={worst ? fmtMoney(worst.pnl) : '—'} tone={worst ? toneClass(worst.pnl) : ''} note={worst?.name} />
+            <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={period.label} />
+            <Metric label="ROI команды" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="PNL / Futures allocation" />
+            <Metric label="Прибыльных трейдеров" value={`${positive} из ${selectedRows.length}`} note="Положительный результат" />
+            <Metric label="Худший результат" value={worst ? fmtMoney(worst.pnl) : '—'} tone={worst ? toneClass(worst.pnl) : ''} note={worst?.name} />
           </section>
 
           <section className="panel open-positions-panel futures-open-positions">
             <div className="open-positions-main">
               <div className="open-positions-icon">≋</div>
               <div>
-                <span className="eyebrow">MARKET EXPOSURE</span>
+                <span className="eyebrow">РЫНОЧНАЯ ЭКСПОЗИЦИЯ</span>
                 <h2>Открытые позиции</h2>
                 <p>Текущее количество сделок в рынке. Показатель не влияет на фактический PNL до закрытия позиций.</p>
               </div>
@@ -151,7 +165,7 @@ function App() {
             <div className="open-positions-main">
               <div className="open-positions-icon">◇</div>
               <div>
-                <span className="eyebrow">INVEST IDEAS EXPOSURE</span>
+                <span className="eyebrow">ИНВЕСТИДЕИ</span>
                 <h2>Открытые инвестпредложения</h2>
                 <p>Количество активных инвестпредложений в работе. Нереализованный PNL не отображается.</p>
               </div>
@@ -165,7 +179,7 @@ function App() {
           </section>
 
           <section className="panel hero-panel">
-            <div className="section-head"><div><span className="eyebrow">WEEKLY INTELLIGENCE</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
+            <div className="section-head"><div><span className="eyebrow">ДИНАМИКА КОМАНДЫ</span><h2>Недельная динамика</h2><p>Дельты между накопительными отчетами, чтобы отделить движение недели от накопленного результата на дату.</p></div><span className="pill warn">7 июля: доливы уже отражены после этой даты</span></div>
             <div className="two-col">
               <LineChart title="Team performance" yLabel="PNL, $" series={teamSeries} />
               <div className="period-panel">
@@ -181,14 +195,14 @@ function App() {
           </section>
 
           <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">INSTITUTIONAL LEADERBOARD</span><h2>Рейтинг трейдеров: с начала октября</h2><p>Фактический результат с начала октября: PNL, ROI, количество открытых сделок и разложение по Bybit / MEXC / LMAX / Spot.</p></div></div>
+            <div className="section-head"><div><span className="eyebrow">КОМАНДА</span><h2>Рейтинг трейдеров: с начала октября</h2><p>Фактический результат с начала октября: PNL, ROI, количество открытых сделок и разложение по Bybit / MEXC / LMAX / Spot.</p></div></div>
             <div className="table-wrap"><table className="ranking-table"><thead><tr><th>Трейдер</th><th>PNL общий</th><th>ROI</th><th>Открытых сделок</th><th>Bybit</th><th>MEXC</th><th>LMAX</th><th>Спот</th><th>Статус</th></tr></thead><tbody>
               {sorted.map((r, i) => { const [status, tone] = statusFor(r.pnl); return <tr key={r.name}><td><b className="rank">{String(i+1).padStart(2,'0')}</b> {r.name}</td><td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td><td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td><td><span className={typeof r.openTrades === 'number' && r.openTrades > 0 ? 'open-trades-badge active' : 'open-trades-badge'}>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</span></td><td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td><td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td><td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td><td>{fmtMoney(r.spot)}</td><td><span className={`status-badge ${tone}`}>{status}</span></td></tr> })}
             </tbody></table></div>
           </section>
 
           <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">TRADER TERMINAL</span><h2>Карточка трейдера</h2><p>Недельная динамика фьючерсной торговли и капитала выбранного трейдера.</p></div></div>
+            <div className="section-head"><div><span className="eyebrow">ПРОФИЛЬ ТРЕЙДЕРА</span><h2>Карточка трейдера</h2><p>Недельная динамика фьючерсной торговли и капитала выбранного трейдера.</p></div></div>
             <div className="trader-layout">
               <div className="trader-list">{data.traders.map((name) => {
                 const r = rows.find((x) => x.name === name)
@@ -203,7 +217,7 @@ function App() {
           </section>
 
           <section className="panel">
-            <div className="section-head"><div><span className="eyebrow">SYSTEM NOTES / DATA QUALITY</span><h2>События и качество данных</h2><p>Ограничения источников, которые нужно учитывать в управленческих выводах.</p></div></div>
+            <div className="section-head"><div><span className="eyebrow">КАЧЕСТВО ДАННЫХ</span><h2>События и качество данных</h2><p>Ограничения источников, которые нужно учитывать в управленческих выводах.</p></div></div>
             <div className="note-grid">{data.dataQualityNotes.map((note) => <div className="note" key={note.title}><strong>{note.title}</strong>{note.text}</div>)}</div>
           </section>
 
