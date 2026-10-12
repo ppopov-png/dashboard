@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import LineChart, { type ChartSeries } from './components/LineChart'
 import type { DashboardData } from './types'
-import { fmtMoney, fmtPct, intervalValue, statusFor, toneClass } from './utils'
+import { fmtMoney, fmtPct, statusFor, toneClass } from './utils'
 import './styles.css'
-import teamBg from './assets/trigonum-team-bg.svg'
+import teamBg from './assets/trigonum-hero.webp'
+import Icon from './components/Icon'
+import TeamChart from './components/TeamChart'
 import trigonumLogo from './assets/trigonum-logo.svg'
 import trigonumMark from './assets/trigonum-mark.svg'
 
@@ -18,12 +20,12 @@ async function sha256(value: string) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan', badge }: { label: string; value: string; note?: string; tone?: string; icon?: string; accent?: 'lime' | 'cyan' | 'purple' | 'violet'; badge?: string }) {
+function Metric({ label, value, note, tone = '', icon = 'roi', accent = 'cyan', badge }: { label: string; value: string; note?: string; tone?: string; icon?: 'pnl' | 'roi' | 'trade' | 'briefcase'; accent?: 'lime' | 'cyan' | 'purple' | 'violet'; badge?: string }) {
   return (
     <div className={`metric-card metric-card--${accent}`}>
       <div className="metric-card-top">
+        <i className="metric-icon"><Icon name={icon} /></i>
         <span>{label}</span>
-        <i className="metric-icon">{icon}</i>
       </div>
       <div className="metric-value-row">
         <strong className={tone}>{value}</strong>
@@ -51,8 +53,8 @@ function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan', 
 function App() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [periodKey, setPeriodKey] = useState('')
-  const [trader, setTrader] = useState('all')
   const [detailTrader, setDetailTrader] = useState('Никита')
+  const [chartRange, setChartRange] = useState(90)
   const [tableSearch, setTableSearch] = useState('')
   const [exchangeFilter, setExchangeFilter] = useState<'all' | 'bybit' | 'mexc' | 'lmax'>('all')
   const [statusFilter, setStatusFilter] = useState<'all' | 'profit' | 'loss' | 'flat'>('all')
@@ -90,19 +92,19 @@ function App() {
   }
 
   const rows = useMemo(() => data?.data[periodKey] ?? [], [data, periodKey])
-  const selectedRows = trader === 'all' ? rows : rows.filter((r) => r.name === trader)
+  const selectedRows = rows
   const period = data?.periods.find((p) => p.key === periodKey)
   const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
   const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
-  const futuresRoi = trader === 'all' && typeof period?.reportedTeamRoi === 'number'
+  const futuresRoi = typeof period?.reportedTeamRoi === 'number'
     ? period.reportedTeamRoi
     : (futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0)
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
-  const aggregateOpenTradesTotal = trader === 'all' && typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
+  const aggregateOpenTradesTotal = typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
   const openTradesTotal = aggregateOpenTradesTotal ?? rowOpenTradesTotal
   const hasOpenTradesTotal = aggregateOpenTradesTotal !== null || (openTradeRows.length === selectedRows.length && selectedRows.length > 0)
-  const openInvestIdeasTotal = trader === 'all' && typeof period?.openInvestIdeasTotal === 'number' ? period.openInvestIdeasTotal : null
+  const openInvestIdeasTotal = typeof period?.openInvestIdeasTotal === 'number' ? period.openInvestIdeasTotal : null
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
@@ -147,10 +149,6 @@ function App() {
     anchor.click()
     URL.revokeObjectURL(url)
   }
-  const teamSeries: ChartSeries[] = [
-    { name: 'PNL команды', kind: 'histogram', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).reduce((sum, row) => sum + row.pnl, 0) })) },
-    { name: 'Динамика периода', kind: 'line', points: data.intervals.map((item) => ({ label: item.label, value: intervalValue(data, item) })) },
-  ]
   const traderSeries: ChartSeries[] = detailRow ? [
     { name: 'PNL общий', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.pnl ?? 0 })) },
     { name: 'Bybit', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.bybit ?? 0 })) },
@@ -164,35 +162,34 @@ function App() {
         <section
           id="overview"
           className="reference-hero reference-hero--v2"
-          style={{ backgroundImage: `linear-gradient(90deg, rgba(1,3,8,.97) 0%, rgba(1,3,8,.86) 33%, rgba(1,3,8,.28) 68%, rgba(1,3,8,.12) 100%), url(${teamBg})` }}
+          style={{ backgroundImage: `linear-gradient(90deg, rgba(1,3,8,.35) 0%, transparent 58%, rgba(1,3,8,.12) 100%), url(${teamBg})` }}
         >
           <div className="reference-nav">
             <div className="reference-logo">
-              <img src={trigonumLogo} alt="TRIGONUM" />
+              <svg className="brand-symbol" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 5h13l10 11H2Z" fill="#aaff37" /><path d="M25 16 35 5h11v11Z" fill="#eb19f4" /><path d="M25 16v25l-11 7V27Z" fill="#00d8ee" /></svg><span>TRIGONUM</span>
             </div>
 
             <nav className="reference-nav-pills" aria-label="Навигация по дашборду">
-              <a className="active" href="#overview">⌂ <span>Дашборд</span></a>
-              <a href="#leaderboard">◉ <span>Трейдеры</span></a>
-              <a href="#dynamics">◇ <span>Стратегии</span></a>
-              <a href="#quality">▣ <span>Инвестпредложения</span></a>
-              <a href="#dynamics">▥ <span>Аналитика</span></a>
-              <a href="#quality">⚙ <span>Настройки</span></a>
+              <a className="active" href="#overview"><Icon name="home" /> <span>Дашборд</span></a>
+              <a href="#leaderboard"><Icon name="users" /> <span>Трейдеры</span></a>
+              <a href="#dynamics"><Icon name="layers" /> <span>Стратегии</span></a>
+              <a href="#quality"><Icon name="briefcase" /> <span>Инвестпредложения</span></a>
+              <a href="#dynamics"><Icon name="chart" /> <span>Аналитика</span></a>
+              <a href="#quality"><Icon name="settings" /> <span>Настройки</span></a>
             </nav>
 
             <div className="reference-nav-controls">
               <label className="reference-select">
-                <span>Период</span>
-                <select value={periodKey} onChange={(e) => setPeriodKey(e.target.value)}>
+                <Icon name="calendar" />
+                <select aria-label="Отчётный период" value={periodKey} onChange={(e) => setPeriodKey(e.target.value)}>
                   {data.periods.map((p) => <option key={p.key} value={p.key}>{p.label} 2026</option>)}
                 </select>
               </label>
-              <button className="reference-logout reference-logout-icon" onClick={handleLogout} title="Выйти">↗</button>
+              <button className="reference-logout reference-logout-icon" onClick={handleLogout} title="Выйти" aria-label="Выйти"><Icon name="logout" /></button>
             </div>
           </div>
 
           <div className="reference-hero-copy reference-hero-copy--v2">
-            <div className="reference-hero-kicker">КОМАНДНЫЙ ДАШБОРД · TRIGONUM</div>
             <h1>БОЛЬШЕ<br />ЧЕМ <span>ТОРГОВЛЯ</span></h1>
             <p>Командная аналитика. Контроль.<br />Реальные результаты.</p>
           </div>
@@ -211,50 +208,47 @@ function App() {
         </section>
 
         <section className="grid metrics premium-metrics reference-metrics">
-          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="↗" accent="lime" badge="FUTURES" />
-          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="◎" accent="cyan" badge="ОТЧЁТ" />
-          <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note={hasOpenTradesTotal ? 'Текущих активных сделок' : 'Нет подтверждённых данных в срезе'} icon="⇄" accent="purple" badge={hasOpenTradesTotal ? 'АКТИВНО' : 'Н/Д'} />
-          <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="▣" accent="violet" badge="ИДЕИ" />
+          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="pnl" accent="lime" badge="FUTURES" />
+          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="roi" accent="cyan" badge="ОТЧЁТ" />
+          <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note={hasOpenTradesTotal ? 'Текущих активных сделок' : 'Нет подтверждённых данных в срезе'} icon="trade" accent="purple" badge={hasOpenTradesTotal ? 'АКТИВНО' : 'Н/Д'} />
+          <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="briefcase" accent="violet" badge="ИДЕИ" />
         </section>
 
         <section id="dynamics" className="reference-analytics-grid">
           <div className="reference-chart-panel">
             <div className="reference-panel-head">
               <div className="reference-panel-title">
-                <span className="reference-panel-icon">▥</span>
+                <span className="reference-panel-icon"><Icon name="chart" /></span>
                 <div>
                   <h2>Динамика команды</h2>
-                  <p>Фактический командный PNL по отчетным срезам</p>
                 </div>
               </div>
               <div className="reference-range">
-                <span>7Д</span>
-                <span className="active">30Д</span>
-                <span>90Д</span>
-                <span>Все</span>
+                {[7, 30, 90, 0].map(range => <button key={range} type="button" className={chartRange === range ? 'active' : ''} aria-pressed={chartRange === range} onClick={() => setChartRange(range)}>{range ? `${range}Д` : 'Все'}</button>)}
               </div>
             </div>
-            <LineChart title="Командный PNL" yLabel="PNL, $" series={teamSeries} height={330} />
+            <div className="reference-chart-body">
+            <TeamChart data={data} periodKey={periodKey} range={chartRange} />
             <div className="reference-chart-summary">
               <div><strong className={toneClass(futuresPnl)}>{fmtMoney(futuresPnl)}</strong><span>Командный PNL</span></div>
               <div><strong className={toneClass(futuresRoi)}>{fmtPct(futuresRoi)}</strong><span>ROI команды</span></div>
               <div><strong>{hasOpenTradesTotal ? openTradesTotal : '—'}</strong><span>Открытых сделок</span></div>
+            </div>
             </div>
           </div>
 
           <div className="reference-leaderboard">
             <div className="reference-panel-head compact">
               <div className="reference-panel-title">
-                <span className="reference-panel-icon trophy">♛</span>
+                <span className="reference-panel-icon trophy"><Icon name="trophy" /></span>
                 <div>
-                  <h2>Рейтинг трейдеров</h2>
-                  <p>с начала октября</p>
+                  <h2>Рейтинг трейдеров: <span>{period.label}</span></h2>
                 </div>
               </div>
               <a className="reference-see-all" href="#leaderboard">Смотреть всех →</a>
             </div>
             <div className="reference-leaderboard-columns">
-              <span>Трейдер</span><span>PNL</span><span>ROI</span>
+              <span>Трейдер</span><span>PNL ($)</span><span>ROI</span><span>Сделок</span><span />
             </div>
             <div className="reference-leaderboard-list">
               {rankedRows.slice(0, 6).map((r, i) => (
@@ -262,10 +256,11 @@ function App() {
                   <div className="reference-rank">{i + 1}</div>
                   <div className="reference-trader">
                     <span className="reference-avatar">{r.name.slice(0, 1)}</span>
-                    <strong>{r.name}</strong>
+                    <strong>{r.name} {i === 0 && r.pnl > 0 && <span className="trader-crown">♛</span>}</strong>
                   </div>
                   <div className={toneClass(r.pnl)}>{fmtMoney(r.pnl)}</div>
                   <div className={toneClass(r.roi)}>{fmtPct(r.roi)}</div>
+                  <div className="reference-trades">{r.openTrades ?? '—'}</div>
                   <div className="reference-progress"><i style={{ width: `${Math.max(6, Math.min(100, Math.abs(r.roi) * 2.2))}%` }} /></div>
                 </div>
               ))}
@@ -276,20 +271,19 @@ function App() {
         <section id="leaderboard" className="reference-detail-panel">
           <div className="reference-detail-head">
             <div className="reference-panel-title">
-              <span className="reference-panel-icon">♟</span>
+              <span className="reference-panel-icon"><Icon name="users" /></span>
               <div>
                 <h2>Детализация по трейдерам</h2>
-                <p>PNL, ROI и результат по биржам</p>
               </div>
             </div>
             <div className="reference-detail-filters">
               <label className="reference-search">
-                <span>⌕</span>
-                <input value={tableSearch} onChange={(e) => setTableSearch(e.target.value)} placeholder="Поиск трейдера..." />
+                <Icon name="search" />
+                <input aria-label="Поиск трейдера" value={tableSearch} onChange={(e) => setTableSearch(e.target.value)} placeholder="Поиск трейдера..." />
               </label>
               <label className="reference-select small">
-                <span>Биржа</span>
-                <select value={exchangeFilter} onChange={(e) => setExchangeFilter(e.target.value as 'all' | 'bybit' | 'mexc' | 'lmax')}>
+
+                <select aria-label="Биржа" value={exchangeFilter} onChange={(e) => setExchangeFilter(e.target.value as 'all' | 'bybit' | 'mexc' | 'lmax')}>
                   <option value="all">Все биржи</option>
                   <option value="bybit">Bybit</option>
                   <option value="mexc">MEXC</option>
@@ -297,15 +291,15 @@ function App() {
                 </select>
               </label>
               <label className="reference-select small">
-                <span>Статус</span>
-                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'profit' | 'loss' | 'flat')}>
+
+                <select aria-label="Статус" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'profit' | 'loss' | 'flat')}>
                   <option value="all">Все статусы</option>
                   <option value="profit">Прибыль</option>
                   <option value="loss">Просадка</option>
                   <option value="flat">Без движения</option>
                 </select>
               </label>
-              <button className="reference-export" type="button" onClick={exportCsv}>⇩ Экспорт</button>
+              <button className="reference-export" type="button" onClick={exportCsv}><Icon name="download" /> Экспорт</button>
             </div>
           </div>
 
@@ -315,9 +309,9 @@ function App() {
                 <tr>
                   <th>Трейдер</th>
                   <th>Статус</th>
-                  <th>Bybit</th>
-                  <th>MEXC</th>
-                  <th>LMAX</th>
+                  <th>Bybit<small>PNL ($)</small></th>
+                  <th>MEXC<small>PNL ($)</small></th>
+                  <th>LMAX<small>PNL ($)</small></th>
                   <th>Общий PNL</th>
                   <th>ROI</th>
                   <th>Открытые сделки</th>
@@ -352,11 +346,10 @@ function App() {
                           title="Открыть карточку трейдера"
                           onClick={() => {
                             setDetailTrader(r.name)
-                            setTrader(r.name)
                             document.querySelector('#trader')?.scrollIntoView({ behavior: 'smooth' })
                           }}
                         >
-                          ▥
+                          <Icon name="chart" />
                         </button>
                       </td>
                     </tr>
@@ -364,6 +357,7 @@ function App() {
                 })}
               </tbody>
             </table>
+            {tableRows.length === 0 && <div className="table-empty">Трейдеры не найдены. Измените поиск или фильтры.</div>}
           </div>
         </section>
 
@@ -375,7 +369,7 @@ function App() {
               {data.traders.map((name) => {
                 const r = rows.find((x) => x.name === name)
                 return (
-                  <button key={name} className={detailTrader === name ? 'active' : ''} onClick={() => { setDetailTrader(name); setTrader(name) }}>
+                  <button key={name} className={detailTrader === name ? 'active' : ''} onClick={() => setDetailTrader(name)}>
                     <span className="trader-avatar">{name.slice(0, 1)}</span>
                     <span className="trader-directory-name">{name}</span>
                     <strong className={r ? toneClass(r.pnl) : ''}>{r ? fmtMoney(r.pnl) : '—'}</strong>
