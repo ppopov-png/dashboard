@@ -1698,3 +1698,224 @@ tbody tr:hover{
   .reference-metrics{grid-template-columns:1fr}
   .reference-chart-summary{grid-template-columns:1fr}
 }
+
+/* === Stage 2: strict reference controls and cards === */
+.reference-see-all{
+  flex:0 0 auto;
+  padding:7px 11px;
+  border:1px solid rgba(197,59,255,.42);
+  border-radius:8px;
+  color:#e9dfff;
+  background:rgba(197,59,255,.05);
+  font-size:9px;
+  font-weight:800;
+  text-decoration:none;
+  letter-spacing:.02em;
+  box-shadow:0 0 16px rgba(197,59,255,.07);
+}
+.reference-see-all:hover{
+  color:#fff;
+  border-color:rgba(197,59,255,.72);
+  box-shadow:0 0 20px rgba(197,59,255,.12);
+}
+.metric-value-row{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:12px;
+}
+.metric-value-row>strong{
+  display:block;
+  margin:0;
+  font-size:31px;
+  line-height:1;
+  letter-spacing:-.025em;
+}
+.metric-badge{
+  padding:5px 8px;
+  border:1px solid rgba(64,255,181,.28);
+  border-radius:999px;
+  background:rgba(30,219,145,.07);
+  color:#59efb4;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+.metric-card--purple .metric-badge,
+.metric-card--violet .metric-badge{
+  border-color:rgba(197,59,255,.26);
+  background:rgba(197,59,255,.06);
+  color:#d695ff;
+}
+.reference-search{
+  min-width:165px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  border:1px solid rgba(34,220,255,.16);
+  border-radius:8px;
+  background:rgba(7,16,32,.86);
+}
+.reference-search span{
+  color:#6f8299;
+  font-size:14px;
+}
+.reference-search input{
+  min-width:0;
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#dce6f3;
+  font-size:10px;
+}
+.reference-search input::placeholder{
+  color:#66788d;
+}
+.reference-export{
+  height:36px;
+  padding:0 12px;
+  border:1px solid rgba(34,220,255,.48);
+  border-radius:8px;
+  background:linear-gradient(180deg,rgba(14,70,88,.36),rgba(6,28,39,.36));
+  color:#35e9ff;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 0 16px rgba(34,220,255,.07);
+}
+.reference-export:hover{
+  color:#fff;
+  border-color:rgba(34,220,255,.75);
+}
+.reference-row-action{
+  width:28px;
+  height:26px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:7px;
+  background:rgba(10,22,40,.9);
+  color:#9fb0c5;
+  cursor:pointer;
+}
+.reference-row-action:hover{
+  color:#22dcff;
+  border-color:rgba(34,220,255,.3);
+}
+.auth-brand-logo{
+  width:235px;
+  max-width:100%;
+  height:auto;
+  margin-bottom:3px;
+}
+
+/* Table and toolbar geometry closer to supplied reference */
+.reference-detail-panel{
+  overflow:hidden;
+}
+.reference-detail-head{
+  min-height:42px;
+}
+.reference-detail-filters{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.reference-detail-filters .reference-select{
+  display:block;
+}
+.reference-detail-filters .reference-select select{
+  height:36px;
+  min-width:140px;
+  padding-top:0;
+  padding-bottom:0;
+  border-radius:8px;
+  border-color:rgba(255,255,255,.10);
+  background:#0a1527;
+  color:#d9e4f1;
+  font-size:10px;
+}
+.reference-table-wrap{
+  border-radius:8px;
+  background:#050c18;
+}
+.reference-table{
+  min-width:1260px;
+}
+.reference-table th:last-child,
+.reference-table td:last-child{
+  width:70px;
+  text-align:center;
+}
+.reference-table td,
+.reference-table th{
+  white-space:nowrap;
+}
+.reference-table tbody tr{
+  transition:background .15s ease;
+}
+.reference-table tbody tr:nth-child(odd){
+  background:rgba(3,9,19,.46);
+}
+.reference-table tbody tr:nth-child(even){
+  background:rgba(8,18,33,.68);
+}
+
+/* Make upper viewport denser like reference screenshot */
+.reference-hero--v2{
+  min-height:344px;
+}
+.reference-hero-copy--v2{
+  margin-top:34px;
+}
+.reference-hero-mark-wrap{
+  top:58px;
+}
+.reference-metrics .metric-card{
+  min-height:136px;
+}
+.reference-chart-panel,
+.reference-leaderboard{
+  min-height:335px;
+}
+.reference-chart-panel{
+  padding-bottom:10px;
+}
+.reference-leaderboard-list{
+  margin-top:3px;
+}
+.reference-leaderboard-row{
+  min-height:46px;
+}
+.reference-panel-head.compact{
+  min-height:34px;
+}
+
+@media(max-width:900px){
+  .reference-detail-filters{
+    justify-content:flex-start;
+  }
+  .reference-search{
+    min-width:220px;
+  }
+}
+@media(max-width:650px){
+  .reference-search{
+    width:100%;
+    min-width:0;
+  }
+  .reference-detail-filters .reference-select{
+    flex:1;
+  }
+  .reference-detail-filters .reference-select select{
+    width:100%;
+    min-width:0;
+  }
+}
