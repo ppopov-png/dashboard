@@ -6,6 +6,7 @@ export interface Period {
   type: PeriodType
   openTradesTotal?: number
   openInvestIdeasTotal?: number
+  reportedTeamRoi?: number
 }
 
 export interface TraderRow {
