@@ -6,8 +6,7 @@ import './styles.css'
 import teamBg from './assets/trigonum-hero.webp'
 import Icon from './components/Icon'
 import TeamChart from './components/TeamChart'
-import trigonumLogo from './assets/trigonum-logo.svg'
-import trigonumMark from './assets/trigonum-mark.svg'
+import { BrandEmblem, BrandWordmark } from './components/Brand'
 
 
 const AUTH_USERNAME = 'admin'
@@ -166,7 +165,7 @@ function App() {
         >
           <div className="reference-nav">
             <div className="reference-logo">
-              <svg className="brand-symbol" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 5h13l10 11H2Z" fill="#aaff37" /><path d="M25 16 35 5h11v11Z" fill="#eb19f4" /><path d="M25 16v25l-11 7V27Z" fill="#00d8ee" /></svg><span>TRIGONUM</span>
+              <BrandWordmark className="reference-wordmark" />
             </div>
 
             <nav className="reference-nav-pills" aria-label="Навигация по дашборду">
@@ -195,9 +194,7 @@ function App() {
           </div>
 
           <div className="reference-hero-mark-wrap" aria-hidden="true">
-            <span className="reference-orbit reference-orbit-a" />
-            <span className="reference-orbit reference-orbit-b" />
-            <img className="reference-hero-mark" src={trigonumMark} alt="" />
+            <BrandEmblem className="reference-hero-mark" />
           </div>
           <div className="reference-hero-words" aria-hidden="true">
             <span>ЛЮДИ</span>
@@ -448,7 +445,7 @@ function LoginScreen({ onLogin }: { onLogin: (username: string, password: string
   return (
     <div className="auth-screen">
       <form className="auth-card" onSubmit={submit}>
-        <img className="auth-brand-logo" src={trigonumLogo} alt="TRIGONUM" />
+        <BrandWordmark className="auth-brand-logo" />
         <div className="kicker">TRIGONUM · TRADER INTELLIGENCE</div>
         <h1>Вход в dashboard</h1>
         <p>Введите логин и пароль для доступа к отчётности трейдеров.</p>

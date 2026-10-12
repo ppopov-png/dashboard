@@ -23,3 +23,10 @@
 @media(min-width:1251px){.reference-table{font-size:14px}.reference-table th{font-size:13px}.reference-table td{height:29px}.reference-table th small{font-size:12px}.reference-trader>strong,.reference-leaderboard-row{font-size:14px}.reference-leaderboard-columns{font-size:11px}.metric-card-top{font-size:18px}.metric-card small{font-size:13px}.reference-chart-summary span{font-size:12px}.reference-leaderboard h2{font-size:16px}.reference-table td:nth-child(n+3){font-weight:500}}
 .team-chart svg text{font-size:12px}
 @media(min-width:1251px) and (max-width:1799px){.team-chart svg{height:174px}.reference-table td{height:26px}.reference-chart-body{min-height:205px}}
+/* Original reference wordmark and emblem, displayed without redrawing. */
+.reference-wordmark{display:block;width:242px;height:auto}.reference-hero-mark-wrap{right:14%;top:37px;width:350px;height:223px;transform:none;perspective:none}.reference-hero-mark{inset:0;width:100%;height:100%;transform:none;filter:none}
+@media(min-width:1800px){.reference-hero-mark-wrap{top:45px;width:385px;height:245px}}
+@media(max-width:1500px){.reference-wordmark{width:217px}}
+@media(max-width:1250px){.reference-wordmark{width:195px}.reference-hero-mark-wrap{top:76px;right:9%}}
+@media(max-width:1000px){.reference-hero-mark-wrap{width:305px;height:194px;top:95px;right:5%;transform:none}}
+@media(max-width:700px){.reference-wordmark{width:158px}.reference-hero-mark-wrap{width:205px;height:131px;right:-36px;top:164px;transform:none;opacity:1}}
