@@ -75,7 +75,9 @@ function App() {
   const period = data?.periods.find((p) => p.key === periodKey)
   const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
   const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
-  const futuresRoi = futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0
+  const futuresRoi = trader === 'all' && typeof period?.reportedTeamRoi === 'number'
+    ? period.reportedTeamRoi
+    : (futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0)
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
   const aggregateOpenTradesTotal = trader === 'all' && typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
