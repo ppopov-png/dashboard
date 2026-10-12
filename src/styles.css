@@ -1919,3 +1919,44 @@ tbody tr:hover{
     min-width:0;
   }
 }
+
+/* === Stage 3: KPI micro charts and exact chrome === */
+.metric-sparkline{
+  position:absolute;
+  right:12px;
+  bottom:8px;
+  width:132px;
+  height:48px;
+  overflow:visible;
+  opacity:.92;
+  filter:drop-shadow(0 0 8px rgba(34,220,255,.16));
+}
+.metric-card--lime .metric-sparkline{
+  filter:drop-shadow(0 0 8px rgba(167,255,40,.18));
+}
+.metric-card--violet .metric-sparkline{
+  filter:drop-shadow(0 0 8px rgba(197,59,255,.2));
+}
+.reference-logout-icon{
+  width:40px;
+  min-width:40px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  color:#91a1b5;
+  font-size:14px;
+}
+.reference-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.reference-footer button{
+  border:0;
+  background:transparent;
+  color:#53667d;
+  font-size:10px;
+  cursor:pointer;
+}
+.reference-footer button:hover{color:#9ab0c8}
