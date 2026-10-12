@@ -30,7 +30,20 @@ function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan', 
         {badge && <span className="metric-badge">{badge}</span>}
       </div>
       {note && <small>{note}</small>}
-      <div className="metric-signal" aria-hidden="true"><b /><b /><b /><b /><b /><b /></div>
+      {accent === 'purple' ? (
+        <div className="metric-signal" aria-hidden="true"><b /><b /><b /><b /><b /><b /></div>
+      ) : (
+        <svg className="metric-sparkline" viewBox="0 0 132 48" aria-hidden="true">
+          <defs>
+            <linearGradient id={`spark-${accent}`} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor={accent === 'lime' ? '#a7ff28' : accent === 'cyan' ? '#22dcff' : '#c53bff'} stopOpacity=".18" />
+              <stop offset="100%" stopColor={accent === 'lime' ? '#a7ff28' : accent === 'cyan' ? '#22dcff' : '#c53bff'} stopOpacity=".9" />
+            </linearGradient>
+          </defs>
+          <path d="M2 41 C18 39 20 29 32 31 S49 38 58 27 S74 15 84 22 S98 25 108 13 S120 9 130 3" fill="none" stroke={`url(#spark-${accent})`} strokeWidth="2.3" strokeLinecap="round" />
+          <path d="M2 41 C18 39 20 29 32 31 S49 38 58 27 S74 15 84 22 S98 25 108 13 S120 9 130 3 L130 48 L2 48 Z" fill={`url(#spark-${accent})`} opacity=".12" />
+        </svg>
+      )}
     </div>
   )
 }
@@ -174,7 +187,7 @@ function App() {
                   {data.periods.map((p) => <option key={p.key} value={p.key}>{p.label} 2026</option>)}
                 </select>
               </label>
-              <button className="reference-logout" onClick={handleLogout}>Выйти</button>
+              <button className="reference-logout reference-logout-icon" onClick={handleLogout} title="Выйти">↗</button>
             </div>
           </div>
 
@@ -412,7 +425,10 @@ function App() {
         </section>
       </main>
 
-      <footer className="reference-footer">TRIGONUM · данные обновлены {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</footer>
+      <footer className="reference-footer">
+        <span>TRIGONUM · данные обновлены {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</span>
+        <button type="button" onClick={handleLogout}>Выйти</button>
+      </footer>
     </div>
   )
 }
