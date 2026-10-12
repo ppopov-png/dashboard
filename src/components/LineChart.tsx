@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   ColorType,
   CrosshairMode,
+  HistogramSeries,
   LineSeries,
   createChart,
   type Time,
@@ -16,6 +17,7 @@ export interface ChartPoint {
 export interface ChartSeries {
   name: string
   points: ChartPoint[]
+  kind?: 'line' | 'histogram'
 }
 
 interface LineChartProps {
@@ -136,6 +138,30 @@ export default function LineChart({ title, yLabel, series, height = 320, footer 
 
     const created = series.map((item, index) => {
       const color = palette[index % palette.length]
+
+      if (item.kind === 'histogram') {
+        const api = chart.addSeries(HistogramSeries, {
+          color,
+          priceLineVisible: false,
+          lastValueVisible: true,
+          priceFormat: {
+            type: 'custom',
+            minMove: 0.01,
+            formatter: money,
+          },
+        })
+
+        api.setData(item.points.map((point, pointIndex) => ({
+          time: (BASE_TIME + pointIndex * DAY) as UTCTimestamp,
+          value: point.value,
+          color: point.value >= 0
+            ? (pointIndex % 3 === 0 ? '#9cff24' : pointIndex % 3 === 1 ? '#22dcff' : '#b237ff')
+            : '#ff5572',
+        })))
+
+        return { api, name: item.name, color }
+      }
+
       const api = chart.addSeries(LineSeries, {
         color,
         lineWidth: index === 0 ? 3 : 2,
