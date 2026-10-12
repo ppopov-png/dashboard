@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-05T00:00:00Z",
+  "updatedAt": "2026-10-12T12:55:00Z",
   "traders": [
     "Никита",
     "Родион",
@@ -56,10 +56,10 @@
     },
     {
       "key": "octSlice",
-      "label": "Октябрь (срез)",
+      "label": "1–12 октября",
       "type": "snapshot",
-      "openTradesTotal": 9,
-      "openInvestIdeasTotal": 3
+      "openInvestIdeasTotal": 3,
+      "reportedTeamRoi": 0.29
     }
   ],
   "investHistory": {
@@ -111,7 +111,7 @@
     "octSlice": {
       "realized": 9912,
       "allocation": 75000,
-      "note": "Последний подтвержденный realized PNL Invest Ideas: +$9 912; новых данных по Invest Ideas в октябрьском срезе не предоставлено"
+      "note": "Последний подтвержденный realized PNL Invest Ideas: +$9 912; в отчете Futures Trading 1–12.10 новых данных по Invest Ideas не предоставлено"
     }
   },
   "data": {
@@ -730,20 +730,20 @@
     "octSlice": [
       {
         "name": "Никита",
-        "pnl": 0,
-        "roi": 0,
-        "bybit": 0,
+        "pnl": 1616.41,
+        "roi": 1.05,
+        "bybit": -0.55,
         "mexc": 0,
-        "lmax": 0,
+        "lmax": 1616.96,
         "spot": null,
         "capitalAfter": null,
         "capitalStart": 160000
       },
       {
         "name": "Родион",
-        "pnl": 0,
+        "pnl": -0.16,
         "roi": 0,
-        "bybit": 0,
+        "bybit": -0.16,
         "mexc": 0,
         "lmax": 0,
         "spot": null,
@@ -753,7 +753,7 @@
       {
         "name": "Лиза",
         "pnl": -535.28,
-        "roi": -0.67,
+        "roi": -10.47,
         "bybit": 0,
         "mexc": 0,
         "lmax": -535.28,
@@ -852,10 +852,10 @@
       "note": "Изменение за неделю"
     },
     {
-      "label": "Октябрь · срез",
+      "label": "1–12 октября",
       "from": null,
       "to": "octSlice",
-      "note": "Новый месяц, первый предоставленный срез"
+      "note": "Futures Trading 1–12.10 · PNL +$1 080,97 · ROI +0,29%"
     }
   ],
   "capitalEvents": {
@@ -1026,6 +1026,10 @@
     {
       "title": "Реальный капитал",
       "text": "Для октябрьского среза в источнике видны отдельные балансы площадок, но полного итогового Capital After по каждому трейдеру нет. Поле оставлено как «нет данных» без предположений."
+    },
+    {
+      "title": "ROI 1–12 октября",
+      "text": "Командный ROI +0,29% взят напрямую из отчета Futures Trading 1–12.10. Индивидуальные ROI также отражены по предоставленному срезу."
     }
   ],
   "investMeta": {
