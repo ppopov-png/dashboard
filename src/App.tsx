@@ -92,8 +92,8 @@ function App() {
   const sorted = [...selectedRows].sort((a, b) => b.pnl - a.pnl)
   const detailRow = rows.find((r) => r.name === detailTrader) ?? rows[0]
   const teamSeries: ChartSeries[] = [
-    { name: 'PNL среза', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).reduce((sum, row) => sum + row.pnl, 0) })) },
-    { name: 'Недельная дельта', points: data.intervals.map((item) => ({ label: item.label, value: intervalValue(data, item) })) },
+    { name: 'PNL команды', kind: 'histogram', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).reduce((sum, row) => sum + row.pnl, 0) })) },
+    { name: 'Динамика периода', kind: 'line', points: data.intervals.map((item) => ({ label: item.label, value: intervalValue(data, item) })) },
   ]
   const traderSeries: ChartSeries[] = detailRow ? [
     { name: 'PNL общий', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.pnl ?? 0 })) },
@@ -107,7 +107,7 @@ function App() {
       <main className="reference-main">
         <section
           id="overview"
-          className="reference-hero"
+          className="reference-hero reference-hero--v2"
           style={{ backgroundImage: `linear-gradient(90deg, rgba(1,3,8,.97) 0%, rgba(1,3,8,.86) 33%, rgba(1,3,8,.28) 68%, rgba(1,3,8,.12) 100%), url(${teamBg})` }}
         >
           <div className="reference-nav">
@@ -118,9 +118,10 @@ function App() {
             <nav className="reference-nav-pills" aria-label="Навигация по дашборду">
               <a className="active" href="#overview">⌂ <span>Дашборд</span></a>
               <a href="#leaderboard">◉ <span>Трейдеры</span></a>
-              <a href="#dynamics">⌁ <span>Аналитика</span></a>
-              <a href="#trader">◇ <span>Карточка трейдера</span></a>
-              <a href="#quality">⚙ <span>Качество данных</span></a>
+              <a href="#dynamics">◇ <span>Стратегии</span></a>
+              <a href="#quality">▣ <span>Инвестпредложения</span></a>
+              <a href="#dynamics">▥ <span>Аналитика</span></a>
+              <a href="#quality">⚙ <span>Настройки</span></a>
             </nav>
 
             <div className="reference-nav-controls">
@@ -134,13 +135,17 @@ function App() {
             </div>
           </div>
 
-          <div className="reference-hero-copy">
+          <div className="reference-hero-copy reference-hero-copy--v2">
             <div className="reference-hero-kicker">КОМАНДНЫЙ ДАШБОРД · TRIGONUM</div>
             <h1>БОЛЬШЕ<br />ЧЕМ <span>ТОРГОВЛЯ</span></h1>
             <p>Командная аналитика. Контроль.<br />Реальные результаты.</p>
           </div>
 
-          <img className="reference-hero-mark" src={trigonumMark} alt="" aria-hidden="true" />
+          <div className="reference-hero-mark-wrap" aria-hidden="true">
+            <span className="reference-orbit reference-orbit-a" />
+            <span className="reference-orbit reference-orbit-b" />
+            <img className="reference-hero-mark" src={trigonumMark} alt="" />
+          </div>
           <div className="reference-hero-words" aria-hidden="true">
             <span>ЛЮДИ</span>
             <span>СТРАТЕГИИ</span>
