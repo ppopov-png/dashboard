@@ -1,13 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 92" role="img" aria-label="TRIGONUM">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 100" role="img" aria-label="TRIGONUM">
   <defs>
-    <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#A7FF28"/><stop offset="1" stop-color="#67F22E"/></linearGradient>
-    <linearGradient id="gC" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#22DCFF"/><stop offset="1" stop-color="#12A9ED"/></linearGradient>
-    <linearGradient id="gP" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#C53BFF"/><stop offset="1" stop-color="#A92BFF"/></linearGradient>
+    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A9FF2B"/>
+      <stop offset="1" stop-color="#77F42D"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#28E3FF"/>
+      <stop offset="1" stop-color="#08AEEF"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C53CFF"/>
+      <stop offset="1" stop-color="#EF35F8"/>
+    </linearGradient>
   </defs>
-  <g transform="translate(2 8)">
-    <polygon points="0,8 48,8 66,28 0,28" fill="url(#gL)"/>
-    <polygon points="66,28 84,8 134,8 134,28" fill="url(#gP)"/>
-    <polygon points="55,28 77,28 77,76 55,76" fill="url(#gC)"/>
+
+  <g transform="translate(2 5)">
+    <polygon points="0,14 35,14 47,27 12,27" fill="url(#lime)"/>
+    <polygon points="47,27 60,14 88,14 76,27" fill="url(#violet)"/>
+    <polygon points="39,27 55,27 55,76 47,86 39,76" fill="url(#cyan)"/>
   </g>
-  <text x="158" y="62" fill="#FFFFFF" font-family="Inter,Arial,sans-serif" font-size="48" font-weight="800" letter-spacing="1.2">TRIGONUM</text>
+
+  <text
+    x="108"
+    y="67"
+    fill="#FFFFFF"
+    font-family="Arial Black, Arial, Helvetica, sans-serif"
+    font-size="52"
+    font-weight="900"
+    letter-spacing="0.5"
+  >TRIGONUM</text>
 </svg>
