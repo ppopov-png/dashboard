@@ -18,14 +18,17 @@ async function sha256(value: string) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan' }: { label: string; value: string; note?: string; tone?: string; icon?: string; accent?: 'lime' | 'cyan' | 'purple' | 'violet' }) {
+function Metric({ label, value, note, tone = '', icon = '◈', accent = 'cyan', badge }: { label: string; value: string; note?: string; tone?: string; icon?: string; accent?: 'lime' | 'cyan' | 'purple' | 'violet'; badge?: string }) {
   return (
     <div className={`metric-card metric-card--${accent}`}>
       <div className="metric-card-top">
         <span>{label}</span>
         <i className="metric-icon">{icon}</i>
       </div>
-      <strong className={tone}>{value}</strong>
+      <div className="metric-value-row">
+        <strong className={tone}>{value}</strong>
+        {badge && <span className="metric-badge">{badge}</span>}
+      </div>
       {note && <small>{note}</small>}
       <div className="metric-signal" aria-hidden="true"><b /><b /><b /><b /><b /><b /></div>
     </div>
@@ -37,6 +40,9 @@ function App() {
   const [periodKey, setPeriodKey] = useState('')
   const [trader, setTrader] = useState('all')
   const [detailTrader, setDetailTrader] = useState('Никита')
+  const [tableSearch, setTableSearch] = useState('')
+  const [exchangeFilter, setExchangeFilter] = useState<'all' | 'bybit' | 'mexc' | 'lmax'>('all')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'profit' | 'loss' | 'flat'>('all')
   const [error, setError] = useState('')
   const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem(AUTH_SESSION_KEY) === '1')
 
@@ -89,8 +95,45 @@ function App() {
   if (error) return <div className="loading">Ошибка: {error}</div>
   if (!data || !period) return <div className="loading">Загрузка Trigonum Trader Intelligence…</div>
 
-  const sorted = [...selectedRows].sort((a, b) => b.pnl - a.pnl)
+  const rankedRows = [...selectedRows].sort((a, b) => b.pnl - a.pnl)
+  const tableRows = rankedRows.filter((row) => {
+    const matchesSearch = row.name.toLowerCase().includes(tableSearch.trim().toLowerCase())
+    const matchesExchange =
+      exchangeFilter === 'all' ||
+      (exchangeFilter === 'bybit' && row.bybit !== 0) ||
+      (exchangeFilter === 'mexc' && row.mexc !== 0) ||
+      (exchangeFilter === 'lmax' && row.lmax !== 0)
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'profit' && row.pnl > 0) ||
+      (statusFilter === 'loss' && row.pnl < 0) ||
+      (statusFilter === 'flat' && row.pnl === 0)
+    return matchesSearch && matchesExchange && matchesStatus
+  })
   const detailRow = rows.find((r) => r.name === detailTrader) ?? rows[0]
+
+  const exportCsv = () => {
+    const header = ['Трейдер', 'Bybit', 'MEXC', 'LMAX', 'PNL', 'ROI', 'Открытые сделки']
+    const body = tableRows.map((row) => [
+      row.name,
+      row.bybit,
+      row.mexc,
+      row.lmax,
+      row.pnl,
+      row.roi,
+      typeof row.openTrades === 'number' ? row.openTrades : '',
+    ])
+    const csv = [header, ...body]
+      .map((line) => line.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(';'))
+      .join('\n')
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `trigonum-futures-${periodKey}.csv`
+    anchor.click()
+    URL.revokeObjectURL(url)
+  }
   const teamSeries: ChartSeries[] = [
     { name: 'PNL команды', kind: 'histogram', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).reduce((sum, row) => sum + row.pnl, 0) })) },
     { name: 'Динамика периода', kind: 'line', points: data.intervals.map((item) => ({ label: item.label, value: intervalValue(data, item) })) },
@@ -155,10 +198,10 @@ function App() {
         </section>
 
         <section className="grid metrics premium-metrics reference-metrics">
-          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note="Фактический результат команды" icon="↗" accent="lime" />
-          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="◎" accent="cyan" />
-          <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note="Текущих активных сделок" icon="⇄" accent="purple" />
-          <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Активных предложений для инвесторов" icon="▣" accent="violet" />
+          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="↗" accent="lime" badge="FUTURES" />
+          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="◎" accent="cyan" badge="ОТЧЁТ" />
+          <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note={hasOpenTradesTotal ? 'Текущих активных сделок' : 'Нет подтверждённых данных в срезе'} icon="⇄" accent="purple" badge={hasOpenTradesTotal ? 'АКТИВНО' : 'Н/Д'} />
+          <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="▣" accent="violet" badge="ИДЕИ" />
         </section>
 
         <section id="dynamics" className="reference-analytics-grid">
@@ -195,12 +238,13 @@ function App() {
                   <p>с начала октября</p>
                 </div>
               </div>
+              <a className="reference-see-all" href="#leaderboard">Смотреть всех →</a>
             </div>
             <div className="reference-leaderboard-columns">
               <span>Трейдер</span><span>PNL</span><span>ROI</span>
             </div>
             <div className="reference-leaderboard-list">
-              {sorted.slice(0, 6).map((r, i) => (
+              {rankedRows.slice(0, 6).map((r, i) => (
                 <div className="reference-leaderboard-row" key={r.name}>
                   <div className="reference-rank">{i + 1}</div>
                   <div className="reference-trader">
@@ -226,14 +270,29 @@ function App() {
               </div>
             </div>
             <div className="reference-detail-filters">
+              <label className="reference-search">
+                <span>⌕</span>
+                <input value={tableSearch} onChange={(e) => setTableSearch(e.target.value)} placeholder="Поиск трейдера..." />
+              </label>
               <label className="reference-select small">
-                <span>Трейдер</span>
-                <select value={trader} onChange={(e) => { setTrader(e.target.value); if (e.target.value !== 'all') setDetailTrader(e.target.value) }}>
-                  <option value="all">Все трейдеры</option>
-                  {data.traders.map((name) => <option key={name}>{name}</option>)}
+                <span>Биржа</span>
+                <select value={exchangeFilter} onChange={(e) => setExchangeFilter(e.target.value as 'all' | 'bybit' | 'mexc' | 'lmax')}>
+                  <option value="all">Все биржи</option>
+                  <option value="bybit">Bybit</option>
+                  <option value="mexc">MEXC</option>
+                  <option value="lmax">LMAX</option>
                 </select>
               </label>
-              <span className="reference-status-chip">Данные обновлены {new Date(data.updatedAt).toLocaleDateString('ru-RU')}</span>
+              <label className="reference-select small">
+                <span>Статус</span>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'profit' | 'loss' | 'flat')}>
+                  <option value="all">Все статусы</option>
+                  <option value="profit">Прибыль</option>
+                  <option value="loss">Просадка</option>
+                  <option value="flat">Без движения</option>
+                </select>
+              </label>
+              <button className="reference-export" type="button" onClick={exportCsv}>⇩ Экспорт</button>
             </div>
           </div>
 
@@ -250,10 +309,11 @@ function App() {
                   <th>ROI</th>
                   <th>Открытые сделки</th>
                   <th>Инвестпредложения</th>
+                  <th>Действия</th>
                 </tr>
               </thead>
               <tbody>
-                {sorted.map((r, i) => {
+                {tableRows.map((r, i) => {
                   const [status, tone] = statusFor(r.pnl)
                   return (
                     <tr key={r.name}>
@@ -271,7 +331,21 @@ function App() {
                       <td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td>
                       <td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td>
                       <td>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</td>
-                      <td>{trader === 'all' && openInvestIdeasTotal != null ? '—' : '—'}</td>
+                      <td>—</td>
+                      <td>
+                        <button
+                          className="reference-row-action"
+                          type="button"
+                          title="Открыть карточку трейдера"
+                          onClick={() => {
+                            setDetailTrader(r.name)
+                            setTrader(r.name)
+                            document.querySelector('#trader')?.scrollIntoView({ behavior: 'smooth' })
+                          }}
+                        >
+                          ▥
+                        </button>
+                      </td>
                     </tr>
                   )
                 })}
@@ -364,7 +438,7 @@ function LoginScreen({ onLogin }: { onLogin: (username: string, password: string
   return (
     <div className="auth-screen">
       <form className="auth-card" onSubmit={submit}>
-        <div className="auth-logo">T</div>
+        <img className="auth-brand-logo" src={trigonumLogo} alt="TRIGONUM" />
         <div className="kicker">TRIGONUM · TRADER INTELLIGENCE</div>
         <h1>Вход в dashboard</h1>
         <p>Введите логин и пароль для доступа к отчётности трейдеров.</p>
