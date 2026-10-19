@@ -22,3 +22,7 @@ body{background:#030611;color:#eef1ff}.studio-dashboard{background:radial-gradie
 .studio-dashboard .metric-card-top{font-weight:500}.studio-dashboard .reference-panel-title h2{font-weight:600}.studio-dashboard .reference-table td{font-weight:400}.studio-dashboard .reference-table td:nth-child(n+3){font-weight:500}
 .studio-dashboard .reference-rank.mini{display:none}
 @media(min-width:1201px){.studio-dashboard .metric-card-top{font-size:13px}.studio-dashboard .reference-table td{font-size:13px}.studio-dashboard .reference-table th{font-size:11px}.studio-dashboard .reference-panel-title h2{font-size:14px}}
+
+/* Keep the hero sculpture fully inside its frame. */
+.studio-dashboard .reference-hero{background-size:100% 100%,auto 95%;background-position:center,center;background-repeat:no-repeat;background-color:#030611}
+@media(max-width:620px){.studio-dashboard .reference-hero{height:350px;background-size:100% 100%,95% auto;background-position:center,center bottom}.studio-dashboard .reference-hero-copy{top:22px}}
