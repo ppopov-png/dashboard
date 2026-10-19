@@ -10,14 +10,16 @@ export const fmtMoney = (value: number | null, decimals = 2) => {
   return `${sign}$${abs}`
 }
 
-export const fmtPct = (value: number) =>
-  `${value.toLocaleString('ru-RU', {
+export const fmtPct = (value: number | null) => {
+  if (value === null || Number.isNaN(value)) return 'нет данных'
+  return `${value.toLocaleString('ru-RU', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}%`
+}
 
-export const toneClass = (value: number) =>
-  value > 0 ? 'pos' : value < 0 ? 'neg' : 'flat'
+export const toneClass = (value: number | null) =>
+  value === null ? 'flat' : value > 0 ? 'pos' : value < 0 ? 'neg' : 'flat'
 
 export const getRows = (dashboard: DashboardData, periodKey: string) =>
   dashboard.data[periodKey] ?? []
@@ -63,3 +65,4 @@ export const statusFor = (value: number): [string, string] => {
   if (value < 0) return ['Просадка', 'bad']
   return ['Без движения', 'warn']
 }
+

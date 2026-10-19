@@ -12,7 +12,7 @@ export interface Period {
 export interface TraderRow {
   name: string
   pnl: number
-  roi: number
+  roi: number | null
   bybit: number
   mexc: number
   lmax: number
@@ -90,3 +90,4 @@ export interface DashboardData {
   investMeta: InvestMeta
   investTimeline: InvestTimelineItem[]
 }
+

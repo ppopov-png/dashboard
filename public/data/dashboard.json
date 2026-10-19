@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-12T12:55:00Z",
+  "updatedAt": "2026-10-19T00:00:00Z",
   "traders": [
     "Никита",
     "Родион",
@@ -60,6 +60,13 @@
       "type": "snapshot",
       "openInvestIdeasTotal": 3,
       "reportedTeamRoi": 0.29
+    },
+    {
+      "key": "oct19",
+      "label": "1–19 октября",
+      "type": "snapshot",
+      "openInvestIdeasTotal": 3,
+      "reportedTeamRoi": 0.98
     }
   ],
   "investHistory": {
@@ -794,6 +801,74 @@
         "capitalAfter": null,
         "capitalStart": 10000
       }
+    ],
+    "oct19": [
+      {
+        "name": "Никита",
+        "pnl": 2424.21,
+        "roi": 1.57,
+        "bybit": 1144.45,
+        "mexc": 0.0,
+        "lmax": 1616.96,
+        "spot": -337.2,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Родион",
+        "pnl": 2817.64,
+        "roi": 1.77,
+        "bybit": 2817.64,
+        "mexc": 0.0,
+        "lmax": 0.0,
+        "spot": 0.0,
+        "capitalAfter": null,
+        "capitalStart": 160000
+      },
+      {
+        "name": "Лиза",
+        "pnl": -1344.28,
+        "roi": null,
+        "bybit": 0.0,
+        "mexc": -809.0,
+        "lmax": -535.28,
+        "spot": 0.0,
+        "capitalAfter": null,
+        "capitalStart": 80000
+      },
+      {
+        "name": "Андрей",
+        "pnl": -156.08,
+        "roi": -0.78,
+        "bybit": 0.0,
+        "mexc": 0.0,
+        "lmax": 0.0,
+        "spot": -156.08,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Сергей",
+        "pnl": -98.61,
+        "roi": -0.5,
+        "bybit": 0.0,
+        "mexc": 0.0,
+        "lmax": 0.0,
+        "spot": -98.61,
+        "capitalAfter": null,
+        "capitalStart": 20000
+      },
+      {
+        "name": "Слава",
+        "pnl": -49.0,
+        "roi": -0.51,
+        "bybit": -49.0,
+        "mexc": 0.0,
+        "lmax": 0.0,
+        "spot": 0.0,
+        "capitalAfter": null,
+        "capitalStart": 10000
+      }
     ]
   },
   "intervals": [
@@ -856,6 +931,12 @@
       "from": null,
       "to": "octSlice",
       "note": "Futures Trading 1–12.10 · PNL +$1 080,97 · ROI +0,29%"
+    },
+    {
+      "label": "13–19 октября",
+      "from": "octSlice",
+      "to": "oct19",
+      "note": "Изменение по отчету Futures Trading за 1–19.10"
     }
   ],
   "capitalEvents": {
@@ -1085,3 +1166,4 @@
     }
   ]
 }
+
