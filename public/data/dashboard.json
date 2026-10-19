@@ -65,7 +65,7 @@
       "key": "oct19",
       "label": "1–19 октября",
       "type": "snapshot",
-      "openInvestIdeasTotal": 3,
+      "openInvestIdeasTotal": 6,
       "reportedTeamRoi": 0.98
     }
   ],
@@ -119,6 +119,11 @@
       "realized": 9912,
       "allocation": 75000,
       "note": "Последний подтвержденный realized PNL Invest Ideas: +$9 912; в отчете Futures Trading 1–12.10 новых данных по Invest Ideas не предоставлено"
+    },
+    "oct19": {
+      "realized": 0,
+      "allocation": 22250,
+      "note": "Invest Ideas 1–19.10: 6 открытых, 0 закрытых; realized PNL $0; нереализованный PNL −$2 535; риски обновлены"
     }
   },
   "data": {
@@ -808,7 +813,7 @@
         "pnl": 2424.21,
         "roi": 1.57,
         "bybit": 1144.45,
-        "mexc": 0.0,
+        "mexc": 0,
         "lmax": 1616.96,
         "spot": -337.2,
         "capitalAfter": null,
@@ -819,9 +824,9 @@
         "pnl": 2817.64,
         "roi": 1.77,
         "bybit": 2817.64,
-        "mexc": 0.0,
-        "lmax": 0.0,
-        "spot": 0.0,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": 0,
         "capitalAfter": null,
         "capitalStart": 160000
       },
@@ -829,10 +834,10 @@
         "name": "Лиза",
         "pnl": -1344.28,
         "roi": null,
-        "bybit": 0.0,
-        "mexc": -809.0,
+        "bybit": 0,
+        "mexc": -809,
         "lmax": -535.28,
-        "spot": 0.0,
+        "spot": 0,
         "capitalAfter": null,
         "capitalStart": 80000
       },
@@ -840,9 +845,9 @@
         "name": "Андрей",
         "pnl": -156.08,
         "roi": -0.78,
-        "bybit": 0.0,
-        "mexc": 0.0,
-        "lmax": 0.0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
         "spot": -156.08,
         "capitalAfter": null,
         "capitalStart": 20000
@@ -851,21 +856,21 @@
         "name": "Сергей",
         "pnl": -98.61,
         "roi": -0.5,
-        "bybit": 0.0,
-        "mexc": 0.0,
-        "lmax": 0.0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
         "spot": -98.61,
         "capitalAfter": null,
         "capitalStart": 20000
       },
       {
         "name": "Слава",
-        "pnl": -49.0,
+        "pnl": -49,
         "roi": -0.51,
-        "bybit": -49.0,
-        "mexc": 0.0,
-        "lmax": 0.0,
-        "spot": 0.0,
+        "bybit": -49,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": 0,
         "capitalAfter": null,
         "capitalStart": 10000
       }
@@ -1068,6 +1073,10 @@
     {
       "title": "ROI 1–12 октября",
       "text": "Командный ROI +0,29% взят напрямую из отчета Futures Trading 1–12.10. Индивидуальные ROI также отражены по предоставленному срезу."
+    },
+    {
+      "title": "Invest Ideas 19 октября",
+      "text": "6 идей в работе, 0 закрыто. Реализованный PNL $0, нереализованный PNL −$2 535. Суммарный риск по трейдерам $22 250."
     }
   ],
   "investMeta": {
