@@ -961,134 +961,91 @@
   },
   "investTeams": {
     "Никита": {
-      "team": "Никита + Слава",
-      "allocation": 25000,
-      "pnl": 4234,
-      "roi": 16.94,
+      "team": "Никита · риск $2 500",
+      "allocation": 2500,
+      "pnl": -20,
+      "roi": 0,
       "open": 1,
-      "closed": 1,
+      "closed": 0,
       "ideas": [
         {
-          "name": "Brent LONG",
-          "status": "closed",
-          "detail": "закрыта · +$4 234"
-        },
-        {
-          "name": "Natural Gas Henry Hub LONG",
+          "name": "Natural Gas LONG",
           "status": "open",
-          "detail": "в работе · unrealized $0"
+          "detail": "в отработке · нереализованный PNL −$20"
         }
       ]
     },
     "Слава": {
-      "team": "Никита + Слава",
-      "allocation": 25000,
-      "pnl": 4234,
-      "roi": 16.94,
-      "open": 1,
-      "closed": 1,
+      "team": "Слава · риск $3 750",
+      "allocation": 3750,
+      "pnl": -160,
+      "roi": 0,
+      "open": 3,
+      "closed": 0,
       "ideas": [
         {
-          "name": "Brent LONG",
-          "status": "closed",
-          "detail": "закрыта · +$4 234"
+          "name": "HAL LONG",
+          "status": "open",
+          "detail": "в отработке · нереализованный PNL +$110"
         },
         {
-          "name": "Natural Gas Henry Hub LONG",
+          "name": "APEX + Trump LONG",
           "status": "open",
-          "detail": "в работе · unrealized $0"
+          "detail": "в отработке · нереализованный PNL −$400"
+        },
+        {
+          "name": "Natural Gas LONG",
+          "status": "open",
+          "detail": "в отработке · нереализованный PNL +$130"
         }
       ]
     },
     "Родион": {
-      "team": "Родион + Сергей",
-      "allocation": 50000,
-      "pnl": 3200,
-      "roi": 12.8,
-      "open": 2,
+      "team": "Родион · риск $8 000 · без позиций",
+      "allocation": 8000,
+      "pnl": 0,
+      "roi": 0,
+      "open": 0,
       "closed": 0,
-      "ideas": [
-        {
-          "name": "CRCL + GRAM LONG",
-          "status": "open",
-          "detail": "в работе · CRCL realized +$3 200; unrealized −$580"
-        },
-        {
-          "name": "Oracle LONG",
-          "status": "open",
-          "detail": "в работе · unrealized −$100"
-        }
-      ]
+      "ideas": []
     },
     "Сергей": {
-      "team": "Родион + Сергей",
-      "allocation": 50000,
-      "pnl": 3200,
-      "roi": 12.8,
+      "team": "Сергей · риск $8 000",
+      "allocation": 8000,
+      "pnl": -2355,
+      "roi": 0,
       "open": 2,
       "closed": 0,
       "ideas": [
         {
-          "name": "CRCL + GRAM LONG",
+          "name": "GRAM LONG",
           "status": "open",
-          "detail": "в работе · CRCL realized +$3 200; unrealized −$580"
+          "detail": "в отработке · нереализованный PNL −$725"
         },
         {
-          "name": "Oracle LONG",
+          "name": "ORCL LONG",
           "status": "open",
-          "detail": "в работе · unrealized −$100"
+          "detail": "в отработке · нереализованный PNL −$1 630"
         }
       ]
     },
     "Лиза": {
-      "team": "Лиза + Андрей",
-      "allocation": 50000,
-      "pnl": 2478,
-      "roi": 9.91,
-      "open": 2,
-      "closed": 1,
-      "ideas": [
-        {
-          "name": "UNI LONG",
-          "status": "closed",
-          "detail": "закрыта · +$2 478"
-        },
-        {
-          "name": "NASDAQ LONG",
-          "status": "open",
-          "detail": "в работе · unrealized −$1 200"
-        },
-        {
-          "name": "Coffee Arabica LONG",
-          "status": "open",
-          "detail": "в работе · unrealized −$4 120"
-        }
-      ]
+      "team": "Лиза · риск $0 · без позиций",
+      "allocation": 0,
+      "pnl": 0,
+      "roi": 0,
+      "open": 0,
+      "closed": 0,
+      "ideas": []
     },
     "Андрей": {
-      "team": "Лиза + Андрей",
-      "allocation": 50000,
-      "pnl": 2478,
-      "roi": 9.91,
-      "open": 2,
-      "closed": 1,
-      "ideas": [
-        {
-          "name": "UNI LONG",
-          "status": "closed",
-          "detail": "закрыта · +$2 478"
-        },
-        {
-          "name": "NASDAQ LONG",
-          "status": "open",
-          "detail": "в работе · unrealized −$1 200"
-        },
-        {
-          "name": "Coffee Arabica LONG",
-          "status": "open",
-          "detail": "в работе · unrealized −$4 120"
-        }
-      ]
+      "team": "Андрей · риск $0 · без позиций",
+      "allocation": 0,
+      "pnl": 0,
+      "roi": 0,
+      "open": 0,
+      "closed": 0,
+      "ideas": []
     }
   },
   "dataQualityNotes": [
@@ -1114,14 +1071,14 @@
     }
   ],
   "investMeta": {
-    "asOf": "10 сентября 2026",
-    "totalIdeas": 7,
-    "openIdeas": 5,
-    "closedIdeas": 2,
-    "realizedPnl": 9912,
-    "realizedBase": 75000,
-    "unrealizedPnl": -6000,
-    "activeAllocation": 125000
+    "asOf": "19 октября 2026",
+    "totalIdeas": 6,
+    "openIdeas": 6,
+    "closedIdeas": 0,
+    "realizedPnl": 0,
+    "realizedBase": 22250,
+    "unrealizedPnl": -2535,
+    "activeAllocation": 22250
   },
   "investTimeline": [
     {
@@ -1163,7 +1120,38 @@
     {
       "date": "27.08",
       "text": "Открыта идея Oracle LONG — команда Родион и Сергей"
+    },
+    {
+      "date": "01.10",
+      "text": "Начат новый отчетный период по инвест-идеям; статусы и результат учитываются с начала октября"
+    },
+    {
+      "date": "01.10",
+      "text": "Никита удерживает Natural Gas LONG; риск $2 500"
+    },
+    {
+      "date": "01.10",
+      "text": "Сергей удерживает GRAM LONG; риск трейдера $8 000"
+    },
+    {
+      "date": "01.10",
+      "text": "Сергей удерживает ORCL LONG; риск трейдера $8 000"
+    },
+    {
+      "date": "05.10",
+      "text": "Слава открыл APEX + Trump LONG; риск трейдера $3 750"
+    },
+    {
+      "date": "13.10",
+      "text": "Слава открыл HAL LONG"
+    },
+    {
+      "date": "16.10",
+      "text": "Слава открыл Natural Gas LONG"
+    },
+    {
+      "date": "19.10",
+      "text": "Срез инвест-идей: 6 открытых, 0 закрытых; суммарный нереализованный PNL −$2 535"
     }
   ]
 }
-
