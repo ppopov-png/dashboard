@@ -3,10 +3,13 @@ import LineChart, { type ChartSeries } from './components/LineChart'
 import type { DashboardData } from './types'
 import { fmtMoney, fmtPct, statusFor, toneClass } from './utils'
 import './styles.css'
-import teamBg from './assets/trigonum-hero.webp'
+import teamBg from './assets/trigonum-studio-hero.webp'
+import Metric from './components/Metric'
+import PnlDistribution from './components/PnlDistribution'
+import './studio.css'
 import Icon from './components/Icon'
 import TeamChart from './components/TeamChart'
-import { BrandEmblem, BrandWordmark } from './components/Brand'
+import { BrandWordmark } from './components/Brand'
 
 
 const AUTH_USERNAME = 'admin'
@@ -19,38 +22,9 @@ async function sha256(value: string) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-function Metric({ label, value, note, tone = '', icon = 'roi', accent = 'cyan', badge }: { label: string; value: string; note?: string; tone?: string; icon?: 'pnl' | 'roi' | 'trade' | 'briefcase'; accent?: 'lime' | 'cyan' | 'purple' | 'violet'; badge?: string }) {
-  return (
-    <div className={`metric-card metric-card--${accent}`}>
-      <div className="metric-card-top">
-        <i className="metric-icon"><Icon name={icon} /></i>
-        <span>{label}</span>
-      </div>
-      <div className="metric-value-row">
-        <strong className={tone}>{value}</strong>
-        {badge && <span className="metric-badge">{badge}</span>}
-      </div>
-      {note && <small>{note}</small>}
-      {accent === 'purple' ? (
-        <div className="metric-signal" aria-hidden="true"><b /><b /><b /><b /><b /><b /></div>
-      ) : (
-        <svg className="metric-sparkline" viewBox="0 0 132 48" aria-hidden="true">
-          <defs>
-            <linearGradient id={`spark-${accent}`} x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={accent === 'lime' ? '#a7ff28' : accent === 'cyan' ? '#22dcff' : '#c53bff'} stopOpacity=".18" />
-              <stop offset="100%" stopColor={accent === 'lime' ? '#a7ff28' : accent === 'cyan' ? '#22dcff' : '#c53bff'} stopOpacity=".9" />
-            </linearGradient>
-          </defs>
-          <path d="M2 41 C18 39 20 29 32 31 S49 38 58 27 S74 15 84 22 S98 25 108 13 S120 9 130 3" fill="none" stroke={`url(#spark-${accent})`} strokeWidth="2.3" strokeLinecap="round" />
-          <path d="M2 41 C18 39 20 29 32 31 S49 38 58 27 S74 15 84 22 S98 25 108 13 S120 9 130 3 L130 48 L2 48 Z" fill={`url(#spark-${accent})`} opacity=".12" />
-        </svg>
-      )}
-    </div>
-  )
-}
-
 function App() {
   const [data, setData] = useState<DashboardData | null>(null)
+  const [activeSection, setActiveSection] = useState('overview')
   const [periodKey, setPeriodKey] = useState('')
   const [detailTrader, setDetailTrader] = useState('Никита')
   const [chartRange, setChartRange] = useState(90)
@@ -148,6 +122,12 @@ function App() {
     anchor.click()
     URL.revokeObjectURL(url)
   }
+  const trendPeriods = data.periods.slice(0, data.periods.findIndex(p => p.key === periodKey) + 1)
+  const pnlTrend = trendPeriods.map(p => (data.data[p.key] ?? []).reduce((sum, r) => sum + r.pnl, 0))
+  const roiTrend = trendPeriods.map((p, i) => {
+    const capital = (data.data[p.key] ?? []).reduce((sum, r) => sum + r.capitalStart, 0)
+    return p.reportedTeamRoi ?? (capital ? pnlTrend[i] / capital * 100 : 0)
+  })
   const traderSeries: ChartSeries[] = detailRow ? [
     { name: 'PNL общий', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.pnl ?? 0 })) },
     { name: 'Bybit', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.bybit ?? 0 })) },
@@ -156,59 +136,61 @@ function App() {
   ] : []
 
   return (
-    <div className="app reference-dashboard">
+    <div className="app reference-dashboard studio-dashboard">
+      <header className="studio-topbar">
+        <a className="studio-brand" href="#overview" onClick={() => setActiveSection('overview')} aria-label="Trigonum — главная">
+          <svg className="studio-symbol" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 6h13l10 11H2Z" fill="#aaff36" /><path d="M25 17 36 6h10v11Z" fill="#ed23f5" /><path d="M25 17v25l-11 6V28Z" fill="#00d8e9" /></svg>
+          <BrandWordmark className="reference-wordmark" />
+        </a>
+        <nav className="studio-topnav" aria-label="Разделы">
+          <a href="#overview" className={activeSection === 'overview' ? 'active' : ''} onClick={() => setActiveSection('overview')}>Обзор</a>
+          <a href="#trader" className={activeSection === 'trader' ? 'active' : ''} onClick={() => setActiveSection('trader')}>Команда</a>
+          <a href="#leaderboard" className={activeSection === 'leaderboard' ? 'active' : ''} onClick={() => setActiveSection('leaderboard')}>Трейдеры</a>
+          <a href="#investments" className={activeSection === 'investments' ? 'active' : ''} onClick={() => setActiveSection('investments')}>Инвестиции</a>
+          <a href="#dynamics" className={activeSection === 'dynamics' ? 'active' : ''} onClick={() => setActiveSection('dynamics')}>Аналитика</a>
+        </nav>
+        <div className="reference-nav-controls">
+          <label className="reference-select"><Icon name="calendar" />
+            <select aria-label="Отчётный период" value={periodKey} onChange={(e) => setPeriodKey(e.target.value)}>
+              {data.periods.map((p) => <option key={p.key} value={p.key}>{p.label} 2026</option>)}
+            </select>
+          </label>
+          <button className="reference-logout" onClick={handleLogout} title="Выйти" aria-label="Выйти"><Icon name="logout" /></button>
+          <span className="studio-user" title="Администратор">T</span>
+        </div>
+      </header>
+      <aside className="studio-sidebar">
+        <nav aria-label="Боковая навигация">
+          {([['overview', 'home', 'Главная'], ['trader', 'users', 'Команда'], ['leaderboard', 'users', 'Трейдеры'], ['investments', 'briefcase', 'Инвестиции'], ['dynamics', 'chart', 'Аналитика'], ['quality', 'layers', 'Источники']] as const).map(([anchor, icon, label]) => <a key={anchor} href={`#${anchor}`} aria-label={label} aria-current={activeSection === anchor ? 'location' : undefined} className={activeSection === anchor ? 'active' : ''} onClick={() => setActiveSection(anchor)}><Icon name={icon} /><span>{label}</span></a>)}
+        </nav>
+        <div className="studio-sidebar-copy">ЛЮДИ<br />СТРАТЕГИИ<br />КАПИТАЛ<br />РОСТ</div>
+        <div className="studio-sidebar-art" aria-hidden="true" />
+        <span className="studio-sidebar-caption">TRIGONUM<br /><b>TRADER INTELLIGENCE</b></span>
+      </aside>
+
       <main className="reference-main">
         <section
           id="overview"
           className="reference-hero reference-hero--v2"
-          style={{ backgroundImage: `linear-gradient(90deg, rgba(1,3,8,.35) 0%, transparent 58%, rgba(1,3,8,.12) 100%), url(${teamBg})` }}
+          style={{ backgroundImage: `linear-gradient(90deg, #030611 0%, rgba(3,6,17,.84) 25%, transparent 58%), url(${teamBg})` }}
         >
-          <div className="reference-nav">
-            <div className="reference-logo">
-              <BrandWordmark className="reference-wordmark" />
-            </div>
-
-            <nav className="reference-nav-pills" aria-label="Навигация по дашборду">
-              <a className="active" href="#overview"><Icon name="home" /> <span>Дашборд</span></a>
-              <a href="#leaderboard"><Icon name="users" /> <span>Трейдеры</span></a>
-              <a href="#dynamics"><Icon name="layers" /> <span>Стратегии</span></a>
-              <a href="#quality"><Icon name="briefcase" /> <span>Инвестпредложения</span></a>
-              <a href="#dynamics"><Icon name="chart" /> <span>Аналитика</span></a>
-              <a href="#quality"><Icon name="settings" /> <span>Настройки</span></a>
-            </nav>
-
-            <div className="reference-nav-controls">
-              <label className="reference-select">
-                <Icon name="calendar" />
-                <select aria-label="Отчётный период" value={periodKey} onChange={(e) => setPeriodKey(e.target.value)}>
-                  {data.periods.map((p) => <option key={p.key} value={p.key}>{p.label} 2026</option>)}
-                </select>
-              </label>
-              <button className="reference-logout reference-logout-icon" onClick={handleLogout} title="Выйти" aria-label="Выйти"><Icon name="logout" /></button>
-            </div>
-          </div>
-
           <div className="reference-hero-copy reference-hero-copy--v2">
-            <h1>БОЛЬШЕ<br />ЧЕМ <span>ТОРГОВЛЯ</span></h1>
+            <span className="studio-kicker">TRIGONUM</span>
+            <h1>БОЛЬШЕ ЧЕМ<br /><span>ТОРГОВЛЯ</span></h1>
             <p>Командная аналитика. Контроль.<br />Реальные результаты.</p>
+            <a className="studio-hero-action" href="#leaderboard" onClick={() => setActiveSection('leaderboard')}>Смотреть результаты <span>→</span></a>
           </div>
 
-          <div className="reference-hero-mark-wrap" aria-hidden="true">
-            <BrandEmblem className="reference-hero-mark" />
-          </div>
           <div className="reference-hero-words" aria-hidden="true">
-            <span>ЛЮДИ</span>
-            <span>СТРАТЕГИИ</span>
-            <span>КАПИТАЛ</span>
-            <span>РОСТ</span>
+            <span>ТЕХНОЛОГИИ.</span><span>ЛЮДИ.</span><span>КАПИТАЛ.</span><span>БОЛЬШИЕ</span><span>ВОЗМОЖНОСТИ.</span><i>⟶</i>
           </div>
         </section>
 
         <section className="grid metrics premium-metrics reference-metrics">
-          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="pnl" accent="lime" badge="FUTURES" />
-          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="roi" accent="cyan" badge="ОТЧЁТ" />
+          <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="pnl" accent="lime" badge="FUTURES" trend={pnlTrend} />
+          <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="roi" accent="cyan" badge="ОТЧЁТ" trend={roiTrend} />
           <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note={hasOpenTradesTotal ? 'Текущих активных сделок' : 'Нет подтверждённых данных в срезе'} icon="trade" accent="purple" badge={hasOpenTradesTotal ? 'АКТИВНО' : 'Н/Д'} />
-          <Metric label="Открыто инвестпредложений" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="briefcase" accent="violet" badge="ИДЕИ" />
+          <Metric label="Инвестпредложения" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="briefcase" accent="violet" badge="ИДЕИ" />
         </section>
 
         <section id="dynamics" className="reference-analytics-grid">
@@ -234,12 +216,13 @@ function App() {
             </div>
           </div>
 
+          <PnlDistribution rows={rows} />
           <div className="reference-leaderboard">
             <div className="reference-panel-head compact">
               <div className="reference-panel-title">
                 <span className="reference-panel-icon trophy"><Icon name="trophy" /></span>
                 <div>
-                  <h2>Рейтинг трейдеров: <span>{period.label}</span></h2>
+                  <h2>Топ трейдеров команды</h2>
                 </div>
               </div>
               <a className="reference-see-all" href="#leaderboard">Смотреть всех →</a>
@@ -258,7 +241,7 @@ function App() {
                   <div className={toneClass(r.pnl)}>{fmtMoney(r.pnl)}</div>
                   <div className={toneClass(r.roi)}>{fmtPct(r.roi)}</div>
                   <div className="reference-trades">{r.openTrades ?? '—'}</div>
-                  <div className="reference-progress"><i style={{ width: `${Math.max(6, Math.min(100, Math.abs(r.roi) * 2.2))}%` }} /></div>
+                  <div className="reference-progress"><i style={{ width: `${Math.min(100, Math.abs(r.pnl) / Math.max(1, ...rankedRows.map(row => Math.abs(row.pnl))) * 100)}%` }} /></div>
                 </div>
               ))}
             </div>
@@ -397,6 +380,11 @@ function App() {
               <LineChart title={`${detailTrader} · Динамика по площадкам`} yLabel="PNL, $" series={traderSeries} height={340} footer={(data.capitalEvents[detailTrader] ?? []).length ? <ul className="events">{data.capitalEvents[detailTrader].map((event) => <li key={`${event.date}-${event.text}`}><time>{event.date}</time><span>{event.text}</span></li>)}</ul> : null} />
             </div>
           </div>
+        </section>
+
+        <section id="investments" className="panel reference-lower-panel investment-panel">
+          <div className="section-head"><div><span className="eyebrow">INVEST IDEAS</span><h2>Инвестпредложения</h2><p>Последние данные направления · {data.investMeta.asOf}</p></div><span className="profile-period">{data.investMeta.openIdeas} открыто</span></div>
+          <div className="investment-grid">{Array.from(new Map(Object.values(data.investTeams).map(team => [team.team, team])).values()).map(team => <article className="investment-card" key={team.team}><h3>{team.team}</h3><div className="investment-stats"><span>PNL <b className={toneClass(team.pnl)}>{fmtMoney(team.pnl)}</b></span><span>ROI <b className={toneClass(team.roi)}>{fmtPct(team.roi)}</b></span></div><ul>{team.ideas.map(idea => <li key={idea.name}><strong>{idea.name}</strong><span>{idea.status === 'open' ? 'Открыто' : 'Закрыто'}</span><p>{idea.detail}</p></li>)}</ul></article>)}</div>
         </section>
 
         <section id="quality" className="panel quality-panel reference-lower-panel">
