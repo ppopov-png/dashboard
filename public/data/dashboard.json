@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-19T00:00:00Z",
+  "updatedAt": "2026-10-26T00:00:00Z",
   "traders": [
     "Никита",
     "Родион",
@@ -67,6 +67,13 @@
       "type": "snapshot",
       "openInvestIdeasTotal": 6,
       "reportedTeamRoi": 0.98
+    },
+    {
+      "key": "oct26",
+      "label": "1–26 октября",
+      "type": "snapshot",
+      "reportedTeamRoi": 1.13,
+      "openInvestIdeasTotal": 6
     }
   ],
   "investHistory": {
@@ -874,6 +881,74 @@
         "capitalAfter": null,
         "capitalStart": 10000
       }
+    ],
+    "oct26": [
+      {
+        "name": "Никита",
+        "pnl": 1395.47,
+        "roi": 0.9,
+        "bybit": 908,
+        "mexc": 0,
+        "lmax": 824.75,
+        "spot": -337.28,
+        "capitalAfter": 74583,
+        "capitalStart": 73675
+      },
+      {
+        "name": "Родион",
+        "pnl": 2785.84,
+        "roi": 1.75,
+        "bybit": 2785.84,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": 0,
+        "capitalAfter": 80095,
+        "capitalStart": 77309.16
+      },
+      {
+        "name": "Лиза",
+        "pnl": -88.78,
+        "roi": -1.74,
+        "bybit": 0,
+        "mexc": 446.5,
+        "lmax": -535.28,
+        "spot": 0,
+        "capitalAfter": 0,
+        "capitalStart": 0
+      },
+      {
+        "name": "Андрей",
+        "pnl": -160.08,
+        "roi": -0.8,
+        "bybit": -4,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": -156.08,
+        "capitalAfter": 14914,
+        "capitalStart": 14918
+      },
+      {
+        "name": "Сергей",
+        "pnl": 295.79,
+        "roi": 1.51,
+        "bybit": 394.4,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": -98.61,
+        "capitalAfter": 14810.4,
+        "capitalStart": 14416
+      },
+      {
+        "name": "Слава",
+        "pnl": -55,
+        "roi": -0.57,
+        "bybit": -55,
+        "mexc": 0,
+        "lmax": 0,
+        "spot": 0,
+        "capitalAfter": 4556,
+        "capitalStart": 4611
+      }
     ]
   },
   "intervals": [
@@ -942,6 +1017,12 @@
       "from": "octSlice",
       "to": "oct19",
       "note": "Изменение по отчету Futures Trading за 1–19.10"
+    },
+    {
+      "label": "20–26 октября",
+      "from": "oct19",
+      "to": "oct26",
+      "note": "Новый срез от 26.10: командный PNL +$4 173,24 (округлённо +$4 173), ROI +1,13%; детализация по трейдерам из таблицы"
     }
   ],
   "capitalEvents": {
@@ -1077,6 +1158,10 @@
     {
       "title": "Invest Ideas 19 октября",
       "text": "6 идей в работе, 0 закрыто. Реализованный PNL $0, нереализованный PNL −$2 535. Суммарный риск по трейдерам $22 250."
+    },
+    {
+      "title": "Срез 26 октября",
+      "text": "Командный PNL по строкам +$4 173,24 (пользователь указал округлённо +$4 173), командный ROI +1,13% из отчёта. Число инвестиционных идей 6 оставлено как последнее подтверждённое на 19 октября; новых данных по идеям нет. По открытым сделкам новых подтверждённых данных нет."
     }
   ],
   "investMeta": {
