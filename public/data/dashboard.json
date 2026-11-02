@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-26T00:00:00Z",
+  "updatedAt": "2026-11-02T12:51:09Z",
   "traders": [
     "Никита",
     "Родион",
@@ -74,6 +74,14 @@
       "type": "snapshot",
       "reportedTeamRoi": 1.13,
       "openInvestIdeasTotal": 6
+    },
+    {
+      "key": "oct31",
+      "label": "Октябрь",
+      "type": "month",
+      "reportedTeamPnl": 4391.9,
+      "reportedTeamRoi": 1.19,
+      "openInvestIdeasTotal": 6
     }
   ],
   "investHistory": {
@@ -136,6 +144,11 @@
       "realized": -135,
       "allocation": 22250,
       "note": "Invest Ideas 1–26.10: 6 идей в работе, 0 закрытых; зафиксированный результат −$135 по Natural Gas LONG (Никита), идея остаётся открытой; нереализованный PNL −$6 536, общий equity PNL −$6 671; сумма рисков $22 250."
+    },
+    "oct31": {
+      "realized": -135,
+      "allocation": 22250,
+      "note": "Последние подтверждённые данные Invest Ideas — на 26 октября: realized PNL −$135, сумма рисков $22 250. В итоговом отчёте за октябрь предоставлены только Futures; новых данных по инвест-идеям нет."
     }
   },
   "data": {
@@ -954,6 +967,86 @@
         "capitalAfter": null,
         "capitalStart": 0
       }
+    ],
+    "oct31": [
+      {
+        "name": "Никита",
+        "pnl": 1690.38,
+        "roi": 1.1,
+        "bybit": 1346,
+        "mexc": 0,
+        "lmax": 349.7,
+        "bingx": -5.32,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": "N/R"
+      },
+      {
+        "name": "Родион",
+        "pnl": 3250.37,
+        "roi": 2.04,
+        "bybit": 2819,
+        "mexc": 0,
+        "lmax": 431.37,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": "R"
+      },
+      {
+        "name": "Лиза",
+        "pnl": -88.78,
+        "roi": -1.74,
+        "bybit": 0,
+        "mexc": 446.5,
+        "lmax": -535.28,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": "N/R"
+      },
+      {
+        "name": "Андрей",
+        "pnl": -293.07,
+        "roi": -1.47,
+        "bybit": 0,
+        "mexc": null,
+        "lmax": 0,
+        "bingx": -293.07,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": null
+      },
+      {
+        "name": "Сергей",
+        "pnl": -100.61,
+        "roi": -0.51,
+        "bybit": -2,
+        "mexc": null,
+        "lmax": 0,
+        "bingx": -98.61,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": "R"
+      },
+      {
+        "name": "Слава",
+        "pnl": -66.3,
+        "roi": -0.69,
+        "bybit": -66.3,
+        "mexc": null,
+        "lmax": 0,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 0,
+        "realizationStatus": "N/R"
+      }
     ]
   },
   "intervals": [
@@ -1028,6 +1121,12 @@
       "from": "oct19",
       "to": "oct26",
       "note": "Новый срез от 26.10: командный PNL +$4 173,24 (округлённо +$4 173), ROI +1,13%; детализация по трейдерам из таблицы"
+    },
+    {
+      "label": "27–31 октября",
+      "from": "oct26",
+      "to": "oct31",
+      "note": "Закрытие октября: командный PNL +$4 391,90 и ROI +1,19% из сообщения пользователя; детализация по трейдерам из октябрьского отчёта. Сумма строк +$4 391,99 отличается от заявленного итога на $0,09."
     }
   ],
   "capitalEvents": {
@@ -1171,6 +1270,10 @@
     {
       "title": "Инвест-идеи 26 октября",
       "text": "Обновлено по отчёту пользователя: 6 действующих идей и 0 закрытых. Реализованный PNL −$135 по открытой позиции Никиты; нереализованный PNL −$6 536. Итог equity −$6 671. Риски по трейдерам: Никита $2 500, Родион $8 000, Сергей $8 000, Слава $3 750, Лиза и Андрей $0. Никаких дополнительных сумм риска отчёт не содержит."
+    },
+    {
+      "title": "Итоги октября · Futures",
+      "text": "Командные PNL +$4 391,90 и ROI +1,19% взяты из сообщения пользователя. Сумма шести строк на скриншоте +$4 391,99: расхождение $0,09 сохранено без корректировки результатов трейдеров. BingX отражён отдельной площадкой, не как спот. Пустые ячейки MEXC у Андрея, Сергея и Славы оставлены без данных. Общий капитал и число открытых сделок не предоставлены. Данные Invest Ideas, включая 6 открытых идей, остаются подтверждёнными на 26 октября."
     }
   ],
   "investMeta": {

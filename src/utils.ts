@@ -25,9 +25,12 @@ export const getRows = (dashboard: DashboardData, periodKey: string) =>
   dashboard.data[periodKey] ?? []
 
 export const teamTotal = (dashboard: DashboardData, periodKey: string) =>
-  getRows(dashboard, periodKey).reduce((sum, item) => sum + item.pnl, 0)
+  dashboard.periods.find((period) => period.key === periodKey)?.reportedTeamPnl
+  ?? getRows(dashboard, periodKey).reduce((sum, item) => sum + item.pnl, 0)
 
 export const teamRoi = (dashboard: DashboardData, periodKey: string) => {
+  const reportedRoi = dashboard.periods.find((period) => period.key === periodKey)?.reportedTeamRoi
+  if (reportedRoi != null) return reportedRoi
   const rows = getRows(dashboard, periodKey)
   const allocation = rows.reduce((sum, item) => sum + (item.capitalStart || 0), 0)
   return allocation ? (teamTotal(dashboard, periodKey) / allocation) * 100 : 0

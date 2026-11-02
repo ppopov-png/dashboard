@@ -11,7 +11,7 @@ import {
 
 export interface ChartPoint {
   label: string
-  value: number
+  value: number | null
 }
 
 export interface ChartSeries {
@@ -151,13 +151,17 @@ export default function LineChart({ title, yLabel, series, height = 320, footer 
           },
         })
 
-        api.setData(item.points.map((point, pointIndex) => ({
-          time: (BASE_TIME + pointIndex * DAY) as UTCTimestamp,
-          value: point.value,
-          color: point.value >= 0
-            ? (pointIndex % 3 === 0 ? '#9cff24' : pointIndex % 3 === 1 ? '#22dcff' : '#b237ff')
-            : '#ff5572',
-        })))
+        api.setData(item.points.map((point, pointIndex) => {
+          const time = (BASE_TIME + pointIndex * DAY) as UTCTimestamp
+          if (point.value === null) return { time }
+          return {
+            time,
+            value: point.value,
+            color: point.value >= 0
+              ? (pointIndex % 3 === 0 ? '#9cff24' : pointIndex % 3 === 1 ? '#22dcff' : '#b237ff')
+              : '#ff5572',
+          }
+        }))
 
         return { api, name: item.name, color }
       }
@@ -178,10 +182,10 @@ export default function LineChart({ title, yLabel, series, height = 320, footer 
         },
       })
 
-      api.setData(item.points.map((point, pointIndex) => ({
-        time: (BASE_TIME + pointIndex * DAY) as UTCTimestamp,
-        value: point.value,
-      })))
+      api.setData(item.points.map((point, pointIndex) => {
+        const time = (BASE_TIME + pointIndex * DAY) as UTCTimestamp
+        return point.value === null ? { time } : { time, value: point.value }
+      }))
 
       return { api, name: item.name, color }
     })

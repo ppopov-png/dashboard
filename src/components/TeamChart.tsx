@@ -1,23 +1,22 @@
 import { useId } from 'react'
 import type { DashboardData, Period } from '../types'
-import { fmtMoney, fmtPct } from '../utils'
+import { fmtMoney, fmtPct, teamRoi, teamTotal } from '../utils'
 
 function reportDate(period: Period, updatedAt: string) {
-  const match = /^(jul|aug|sep)(\d+)$/.exec(period.key)
-  if (match) return Date.UTC(new Date(updatedAt).getUTCFullYear(), { jul: 6, aug: 7, sep: 8 }[match[1] as 'jul' | 'aug' | 'sep'], Number(match[2]))
+  const key = period.key === 'octSlice' ? 'oct12' : period.key
+  const match = /^(jul|aug|sep|oct)(\d+)$/.exec(key)
+  if (match) return Date.UTC(new Date(updatedAt).getUTCFullYear(), { jul: 6, aug: 7, sep: 8, oct: 9 }[match[1] as 'jul' | 'aug' | 'sep' | 'oct'], Number(match[2]))
   return new Date(updatedAt).getTime()
 }
 
 export default function TeamChart({ data, periodKey, range }: { data: DashboardData; periodKey: string; range: number }) {
   const id = useId().replaceAll(':', '')
-  const selected = data.periods.find(p => p.key === periodKey)!
+  const selectedIndex = data.periods.findIndex(p => p.key === periodKey)
+  const selected = data.periods[selectedIndex]!
   const end = reportDate(selected, data.updatedAt)
-  const periods = data.periods.filter(p => reportDate(p, data.updatedAt) <= end && (!range || reportDate(p, data.updatedAt) >= end - range * 86400000))
+  const periods = data.periods.slice(0, selectedIndex + 1).filter(p => reportDate(p, data.updatedAt) <= end && (!range || reportDate(p, data.updatedAt) >= end - range * 86400000))
   const points = periods.map(p => {
-    const rows = data.data[p.key] ?? []
-    const pnl = rows.reduce((sum, row) => sum + row.pnl, 0)
-    const capital = rows.reduce((sum, row) => sum + row.capitalStart, 0)
-    return { label: p.label, pnl, roi: p.reportedTeamRoi ?? (capital ? pnl / capital * 100 : 0) }
+    return { label: p.label, pnl: teamTotal(data, p.key), roi: teamRoi(data, p.key) }
   })
   const min = Math.min(0, ...points.map(p => p.pnl))
   const max = Math.max(1, ...points.map(p => p.pnl))

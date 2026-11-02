@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import LineChart, { type ChartSeries } from './components/LineChart'
 import type { DashboardData } from './types'
-import { fmtMoney, fmtPct, statusFor, toneClass } from './utils'
+import { fmtMoney, fmtPct, statusFor, teamRoi, teamTotal, toneClass } from './utils'
 import './styles.css'
 import teamBg from './assets/trigonum-studio-hero.webp'
 import Metric from './components/Metric'
@@ -29,7 +29,7 @@ function App() {
   const [detailTrader, setDetailTrader] = useState('Никита')
   const [chartRange, setChartRange] = useState(90)
   const [tableSearch, setTableSearch] = useState('')
-  const [exchangeFilter, setExchangeFilter] = useState<'all' | 'bybit' | 'mexc' | 'lmax'>('all')
+  const [exchangeFilter, setExchangeFilter] = useState<'all' | 'bybit' | 'mexc' | 'lmax' | 'bingx'>('all')
   const [statusFilter, setStatusFilter] = useState<'all' | 'profit' | 'loss' | 'flat'>('all')
   const [error, setError] = useState('')
   const [authenticated, setAuthenticated] = useState(() => sessionStorage.getItem(AUTH_SESSION_KEY) === '1')
@@ -67,11 +67,8 @@ function App() {
   const rows = useMemo(() => data?.data[periodKey] ?? [], [data, periodKey])
   const selectedRows = rows
   const period = data?.periods.find((p) => p.key === periodKey)
-  const futuresPnl = selectedRows.reduce((s, r) => s + r.pnl, 0)
-  const futuresAllocation = selectedRows.reduce((s, r) => s + (r.capitalStart || 0), 0)
-  const futuresRoi = typeof period?.reportedTeamRoi === 'number'
-    ? period.reportedTeamRoi
-    : (futuresAllocation ? futuresPnl / futuresAllocation * 100 : 0)
+  const futuresPnl = data ? teamTotal(data, periodKey) : 0
+  const futuresRoi = data ? teamRoi(data, periodKey) : 0
   const openTradeRows = selectedRows.filter((r) => typeof r.openTrades === 'number')
   const rowOpenTradesTotal = openTradeRows.reduce((sum, r) => sum + (r.openTrades ?? 0), 0)
   const aggregateOpenTradesTotal = typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
@@ -89,8 +86,9 @@ function App() {
     const matchesExchange =
       exchangeFilter === 'all' ||
       (exchangeFilter === 'bybit' && row.bybit !== 0) ||
-      (exchangeFilter === 'mexc' && row.mexc !== 0) ||
-      (exchangeFilter === 'lmax' && row.lmax !== 0)
+      (exchangeFilter === 'mexc' && row.mexc != null && row.mexc !== 0) ||
+      (exchangeFilter === 'lmax' && row.lmax !== 0) ||
+      (exchangeFilter === 'bingx' && row.bingx != null && row.bingx !== 0)
     const matchesStatus =
       statusFilter === 'all' ||
       (statusFilter === 'profit' && row.pnl > 0) ||
@@ -101,14 +99,15 @@ function App() {
   const detailRow = rows.find((r) => r.name === detailTrader) ?? rows[0]
 
   const exportCsv = () => {
-    const header = ['Трейдер', 'Bybit', 'MEXC', 'LMAX', 'PNL', 'ROI', 'Открытые сделки']
+    const header = ['Трейдер', 'Bybit', 'MEXC', 'LMAX', 'BingX', 'PNL', 'ROI', 'Открытые сделки']
     const body = tableRows.map((row) => [
       row.name,
       row.bybit,
-      row.mexc,
+      row.mexc ?? '',
       row.lmax,
+      row.bingx ?? '',
       row.pnl,
-      row.roi,
+      row.roi ?? '',
       typeof row.openTrades === 'number' ? row.openTrades : '',
     ])
     const csv = [header, ...body]
@@ -123,16 +122,14 @@ function App() {
     URL.revokeObjectURL(url)
   }
   const trendPeriods = data.periods.slice(0, data.periods.findIndex(p => p.key === periodKey) + 1)
-  const pnlTrend = trendPeriods.map(p => (data.data[p.key] ?? []).reduce((sum, r) => sum + r.pnl, 0))
-  const roiTrend = trendPeriods.map((p, i) => {
-    const capital = (data.data[p.key] ?? []).reduce((sum, r) => sum + r.capitalStart, 0)
-    return p.reportedTeamRoi ?? (capital ? pnlTrend[i] / capital * 100 : 0)
-  })
+  const pnlTrend = trendPeriods.map(p => teamTotal(data, p.key))
+  const roiTrend = trendPeriods.map(p => teamRoi(data, p.key))
   const traderSeries: ChartSeries[] = detailRow ? [
-    { name: 'PNL общий', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.pnl ?? 0 })) },
-    { name: 'Bybit', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.bybit ?? 0 })) },
-    { name: 'MEXC', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.mexc ?? 0 })) },
-    { name: 'LMAX', points: data.periods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.lmax ?? 0 })) },
+    { name: 'PNL общий', points: trendPeriods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.pnl ?? 0 })) },
+    { name: 'Bybit', points: trendPeriods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.bybit ?? 0 })) },
+    { name: 'MEXC', points: trendPeriods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.mexc ?? null })) },
+    { name: 'LMAX', points: trendPeriods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.lmax ?? 0 })) },
+    { name: 'BingX', points: trendPeriods.map((p) => ({ label: p.label, value: (data.data[p.key] ?? []).find((r) => r.name === detailTrader)?.bingx ?? null })) },
   ] : []
 
   return (
@@ -216,7 +213,7 @@ function App() {
             </div>
           </div>
 
-          <PnlDistribution rows={rows} />
+          <PnlDistribution rows={rows} reportedPnl={futuresPnl} />
           <div className="reference-leaderboard">
             <div className="reference-panel-head compact">
               <div className="reference-panel-title">
@@ -263,11 +260,12 @@ function App() {
               </label>
               <label className="reference-select small">
 
-                <select aria-label="Биржа" value={exchangeFilter} onChange={(e) => setExchangeFilter(e.target.value as 'all' | 'bybit' | 'mexc' | 'lmax')}>
+                <select aria-label="Биржа" value={exchangeFilter} onChange={(e) => setExchangeFilter(e.target.value as 'all' | 'bybit' | 'mexc' | 'lmax' | 'bingx')}>
                   <option value="all">Все биржи</option>
                   <option value="bybit">Bybit</option>
                   <option value="mexc">MEXC</option>
                   <option value="lmax">LMAX</option>
+                  <option value="bingx">BingX</option>
                 </select>
               </label>
               <label className="reference-select small">
@@ -292,6 +290,7 @@ function App() {
                   <th>Bybit<small>PNL ($)</small></th>
                   <th>MEXC<small>PNL ($)</small></th>
                   <th>LMAX<small>PNL ($)</small></th>
+                  <th>BingX<small>PNL ($)</small></th>
                   <th>Общий PNL</th>
                   <th>ROI</th>
                   <th>Открытые сделки</th>
@@ -315,6 +314,7 @@ function App() {
                       <td className={toneClass(r.bybit)}>{fmtMoney(r.bybit)}</td>
                       <td className={toneClass(r.mexc)}>{fmtMoney(r.mexc)}</td>
                       <td className={toneClass(r.lmax)}>{fmtMoney(r.lmax)}</td>
+                      <td className={toneClass(r.bingx ?? null)}>{fmtMoney(r.bingx ?? null)}</td>
                       <td className={toneClass(r.pnl)}><strong>{fmtMoney(r.pnl)}</strong></td>
                       <td className={toneClass(r.roi)}>{fmtPct(r.roi)}</td>
                       <td>{typeof r.openTrades === 'number' ? r.openTrades : '—'}</td>

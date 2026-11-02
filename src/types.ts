@@ -6,6 +6,7 @@ export interface Period {
   type: PeriodType
   openTradesTotal?: number
   openInvestIdeasTotal?: number
+  reportedTeamPnl?: number
   reportedTeamRoi?: number
 }
 
@@ -14,8 +15,10 @@ export interface TraderRow {
   pnl: number
   roi: number | null
   bybit: number
-  mexc: number
+  mexc: number | null
   lmax: number
+  bingx?: number | null
+  realizationStatus?: 'R' | 'N/R' | null
   spot: number | null
   capitalAfter: number | null
   capitalStart: number
