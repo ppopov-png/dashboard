@@ -47,6 +47,9 @@ export interface InvestIdea {
   name: string
   status: 'open' | 'closed'
   detail: string
+  realizedPnl?: number | null
+  unrealizedPnl?: number | null
+  closedAt?: string
 }
 
 export interface InvestTeam {
@@ -75,9 +78,19 @@ export interface InvestMeta {
   openIdeas: number
   closedIdeas: number
   realizedPnl: number
-  realizedBase: number
+  realizedBase: number | null
   unrealizedPnl: number
   activeAllocation: number
+  totalPnl?: number
+  totalRisk?: number
+  periodStart?: string
+}
+
+export interface InvestSnapshot {
+  key: string
+  meta: InvestMeta
+  teams: Record<string, InvestTeam>
+  timeline: InvestTimelineItem[]
 }
 
 export interface DashboardData {
@@ -92,5 +105,6 @@ export interface DashboardData {
   dataQualityNotes: DataQualityNote[]
   investMeta: InvestMeta
   investTimeline: InvestTimelineItem[]
+  investSnapshots?: InvestSnapshot[]
 }
 

@@ -9,6 +9,7 @@ import PnlDistribution from './components/PnlDistribution'
 import './studio.css'
 import Icon from './components/Icon'
 import TeamChart from './components/TeamChart'
+import Investments from './components/Investments'
 import { BrandWordmark } from './components/Brand'
 
 
@@ -74,7 +75,6 @@ function App() {
   const aggregateOpenTradesTotal = typeof period?.openTradesTotal === 'number' ? period.openTradesTotal : null
   const openTradesTotal = aggregateOpenTradesTotal ?? rowOpenTradesTotal
   const hasOpenTradesTotal = aggregateOpenTradesTotal !== null || (openTradeRows.length === selectedRows.length && selectedRows.length > 0)
-  const openInvestIdeasTotal = typeof period?.openInvestIdeasTotal === 'number' ? period.openInvestIdeasTotal : null
 
   if (!authenticated) return <LoginScreen onLogin={handleLogin} />
   if (error) return <div className="loading">Ошибка: {error}</div>
@@ -187,7 +187,7 @@ function App() {
           <Metric label="Командный PNL" value={fmtMoney(futuresPnl)} tone={toneClass(futuresPnl)} note={`Общий результат команды · ${period.label}`} icon="pnl" accent="lime" badge="FUTURES" trend={pnlTrend} />
           <Metric label="ROI" value={fmtPct(futuresRoi)} tone={toneClass(futuresRoi)} note="Доходность команды за период" icon="roi" accent="cyan" badge="ОТЧЁТ" trend={roiTrend} />
           <Metric label="Открыто сделок" value={hasOpenTradesTotal ? String(openTradesTotal) : '—'} note={hasOpenTradesTotal ? 'Текущих активных сделок' : 'Нет подтверждённых данных в срезе'} icon="trade" accent="purple" badge={hasOpenTradesTotal ? 'АКТИВНО' : 'Н/Д'} />
-          <Metric label="Инвестпредложения" value={openInvestIdeasTotal == null ? '—' : String(openInvestIdeasTotal)} note="Последнее подтверждённое значение" icon="briefcase" accent="violet" badge="ИДЕИ" />
+          <Metric label="Инвестпредложения" value={String(data.investMeta.openIdeas)} note={`В работе · закрыто: ${data.investMeta.closedIdeas} · ${data.investMeta.asOf}`} icon="briefcase" accent="violet" badge="ИДЕИ" />
         </section>
 
         <section id="dynamics" className="reference-analytics-grid">
@@ -382,10 +382,7 @@ function App() {
           </div>
         </section>
 
-        <section id="investments" className="panel reference-lower-panel investment-panel">
-          <div className="section-head"><div><span className="eyebrow">INVEST IDEAS</span><h2>Инвестпредложения</h2><p>Последние данные направления · {data.investMeta.asOf}</p></div><span className="profile-period">{data.investMeta.openIdeas} открыто</span></div>
-          <div className="investment-grid">{Array.from(new Map(Object.values(data.investTeams).map(team => [team.team, team])).values()).map(team => <article className="investment-card" key={team.team}><h3>{team.team}</h3><div className="investment-stats"><span>PNL <b className={toneClass(team.pnl)}>{fmtMoney(team.pnl)}</b></span><span>ROI <b className={toneClass(team.roi)}>{fmtPct(team.roi)}</b></span></div><ul>{team.ideas.map(idea => <li key={idea.name}><strong>{idea.name}</strong><span>{idea.status === 'open' ? 'Открыто' : 'Закрыто'}</span><p>{idea.detail}</p></li>)}</ul></article>)}</div>
-        </section>
+        <Investments data={data} />
 
         <section id="quality" className="panel quality-panel reference-lower-panel">
           <div className="section-head"><div><span className="eyebrow">КАЧЕСТВО ДАННЫХ</span><h2>Контроль источников</h2><p>Ключевые ограничения и события, которые важно учитывать при интерпретации отчёта.</p></div><span className="quality-state"><i />Проверено</span></div>
