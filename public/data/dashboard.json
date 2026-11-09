@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02T13:06:05Z",
+  "updatedAt": "2026-11-09T12:49:00Z",
   "traders": [
     "Никита",
     "Родион",
@@ -82,6 +82,13 @@
       "reportedTeamPnl": 4391.9,
       "reportedTeamRoi": 1.19,
       "openInvestIdeasTotal": 6
+    },
+    {
+      "key": "nov09",
+      "label": "1–9 ноября",
+      "type": "snapshot",
+      "reportedTeamPnl": -757,
+      "reportedTeamRoi": -0.21
     }
   ],
   "investHistory": {
@@ -1050,6 +1057,73 @@
         "spot": null,
         "capitalAfter": null,
         "capitalStart": 0,
+        "realizationStatus": "N/R"
+      }
+    ],
+    "nov09": [
+      {
+        "name": "Никита",
+        "pnl": 746.1,
+        "roi": 0.48,
+        "bybit": -36.3,
+        "mexc": 0,
+        "lmax": 1121.4,
+        "bingx": -339,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 154292.76,
+        "realizationStatus": "N/R"
+      },
+      {
+        "name": "Родион",
+        "pnl": -1289.3,
+        "roi": -0.81,
+        "bybit": -1678,
+        "mexc": 0,
+        "lmax": 388.7,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 159630.04,
+        "realizationStatus": "R"
+      },
+      {
+        "name": "Сергей",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 19562.31,
+        "realizationStatus": "R"
+      },
+      {
+        "name": "Андрей",
+        "pnl": -214,
+        "roi": -1.07,
+        "bybit": -214,
+        "mexc": 0,
+        "lmax": 0,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 19950.03,
+        "realizationStatus": "R"
+      },
+      {
+        "name": "Слава",
+        "pnl": 0,
+        "roi": 0,
+        "bybit": 0,
+        "mexc": 0,
+        "lmax": 0,
+        "bingx": 0,
+        "spot": null,
+        "capitalAfter": null,
+        "capitalStart": 9631.18,
         "realizationStatus": "N/R"
       }
     ]
